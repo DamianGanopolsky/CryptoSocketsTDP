@@ -28,15 +28,15 @@ int file_reader_iterate(file_reader_t* self){
     unsigned char buffer_procesado[BUFFER_SIZE];
     unsigned char buffer_normalizado[BUFFER_SIZE];
 
+
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
 		printf("\033[0;31m");
 		cifrado(buffer,buffer_procesado);
 
-		//fwrite(buffer, 1, result, stdout);
 		descifrado(buffer_procesado,buffer_normalizado);
-		//fprintf(stdout,"\n fin buffer \n");
+
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
 		memset(buffer,0,sizeof(buffer));
 		memset(buffer_normalizado,0,sizeof(buffer_normalizado));

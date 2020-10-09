@@ -4,21 +4,21 @@
 void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
 
 	int i=0;
-	int valor;
-	int null_desplazado=191;
+	int null_desplazado=5;
 	char caracter;
 
 	while((i<BUFFER_SIZE)){
-		int valor=0;
+
 		if(*(cadena+i)=='\0'){
 			cadena_procesada[i]=(char)null_desplazado;
 			break;
 		}
-		valor=(int)*(cadena+i);
-		valor=valor+191;
+
+		caracter=*(cadena+i);
+		caracter=caracter+5;
 		printf("cadena es %s \n",cadena);
-		valor=valor%256;
-		cadena_procesada[i]=(char)valor;
+		caracter=caracter%256;
+		cadena_procesada[i]=caracter;
 		i++;
 	}
 
@@ -26,22 +26,20 @@ void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
 
 void descifrado(unsigned char* cadena_procesada,unsigned char* cadena_normalizada){
 	int i=0;
-	int valor;
-	char caracter;
+	char valor_decimal;
 
 	while((i<BUFFER_SIZE)){
-		int valor=0;
-		if((int)*(cadena_procesada+i)==191){
+
+		if(*(cadena_procesada+i)==5){
 			cadena_normalizada[i]='\0';
 			break;
 		}
-		valor=(int)*(cadena_procesada+i);
-		valor=valor-191;
+
+		valor_decimal=*(cadena_procesada+i);
+		valor_decimal=valor_decimal-5;
 		printf("cadena es %s \n",cadena_normalizada);
-		valor=valor%256;
-		cadena_normalizada[i]=(char)valor;
+		valor_decimal=valor_decimal%256;
+		cadena_normalizada[i]=valor_decimal;
 		i++;
 	}
 }
-
-//void descifrado()
