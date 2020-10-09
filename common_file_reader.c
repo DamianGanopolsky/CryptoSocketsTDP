@@ -4,7 +4,7 @@
 #include <string.h>
 #include "common_cesar_encryption.h"
 
-#define BUFFER_SIZE 3
+#define BUFFER_SIZE 4
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
@@ -26,6 +26,7 @@ int file_reader_iterate(file_reader_t* self){
 
     unsigned char buffer[BUFFER_SIZE];
     unsigned char buffer_procesado[BUFFER_SIZE];
+    unsigned char buffer_normalizado[BUFFER_SIZE];
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
@@ -34,9 +35,11 @@ int file_reader_iterate(file_reader_t* self){
 		cifrado(buffer,buffer_procesado);
 
 		//fwrite(buffer, 1, result, stdout);
+		descifrado(buffer_procesado,buffer_normalizado);
 		//fprintf(stdout,"\n fin buffer \n");
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
 		memset(buffer,0,sizeof(buffer));
+		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 		printf("\033[0m");
 	}
 

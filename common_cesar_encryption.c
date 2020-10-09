@@ -1,19 +1,13 @@
 #include "common_cesar_encryption.h"
-#define BUFFER_SIZE 3
+#define BUFFER_SIZE 4
 
 void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
 
 	int i=0;
 	int valor;
 	char caracter;
-	/*
-	valor=(int)*cadena;
-	valor=valor+5;
-	valor=valor%256;
-	*cadena_procesada= (char)valor;
-	//printf("cadena es %s",cadena_cesar->cadena);
-*/
-	while((i<3)){
+
+	while((i<BUFFER_SIZE)){
 		int valor=0;
 		if(*(cadena+i)=='\0'){
 			cadena_procesada[i]='\0';
@@ -27,6 +21,26 @@ void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
 		i++;
 	}
 
+}
+
+void descifrado(unsigned char* cadena_procesada,unsigned char* cadena_normalizada){
+	int i=0;
+	int valor;
+	char caracter;
+
+	while((i<BUFFER_SIZE)){
+		int valor=0;
+		if(*(cadena_procesada+i)=='\0'){
+			cadena_normalizada[i]='\0';
+			break;
+		}
+		valor=(int)*(cadena_procesada+i);
+		valor=valor-5;
+		printf("cadena es %s \n",cadena_normalizada);
+		valor=valor%256;
+		cadena_normalizada[i]=(char)valor;
+		i++;
+	}
 }
 
 //void descifrado()
