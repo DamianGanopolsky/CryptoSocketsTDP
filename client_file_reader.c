@@ -1,8 +1,9 @@
-#include "common_file_reader.h"
+#include "client_file_reader.h"
 
 #include <stdio.h>
 #include <string.h>
 #include "common_cesar_encryption.h"
+#include "common_vigenere_encryption.h"
 
 #define BUFFER_SIZE 4
 
@@ -27,20 +28,29 @@ int file_reader_iterate(file_reader_t* self){
     unsigned char buffer[BUFFER_SIZE];
     unsigned char buffer_procesado[BUFFER_SIZE];
     unsigned char buffer_normalizado[BUFFER_SIZE];
+    vigenere_t vigenere;
 
+
+    char* clave_vigenere= "cla";
+    fseek(self->fp, 0, SEEK_END);
+    int longitud_total = ftell(self->fp);
+    rewind(self->fp);
+    inicializar_vigenere(&vigenere,strlen(clave_vigenere),longitud_total);
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
-		printf("\033[0;31m");
-		cifrado(buffer,buffer_procesado);
 
-		descifrado(buffer_procesado,buffer_normalizado);
+		//cifrado_cesar(buffer,buffer_procesado);
+		cifrado_vigenere(buffer,buffer_procesado,clave_vigenere,&vigenere);
+		descifrado_vigenere(buffer_procesado,buffer_normalizado,clave_vigenere,&vigenere);
+	//	descifrado_cesar(buffer_procesado,buffer_normalizado);
 
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
+
 		memset(buffer,0,sizeof(buffer));
 		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
-		printf("\033[0m");
+
 	}
 
     return 0;

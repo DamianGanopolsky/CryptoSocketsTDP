@@ -4,6 +4,6 @@ typedef struct{
     char* cadena;
 } cesar_cadena_t;
 */
-void cifrado(unsigned char* cadena,unsigned char* cadena_procesada);
+void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada);
 
-void descifrado(unsigned char* cadena_procesada,unsigned char* cadena_normalizada);
+void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada);

@@ -1,0 +1,6 @@
+
+run: all
+	./ejecutable < texto
+
+all: common_main.c common_file_reader.c common_cesar_encryption.c
+	gcc -std=c99 -g client_main.c client_file_reader.c common_cesar_encryption.c -o ejecutable

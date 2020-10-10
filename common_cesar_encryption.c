@@ -1,7 +1,7 @@
 #include "common_cesar_encryption.h"
 #define BUFFER_SIZE 4
 
-void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
+void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada){
 
 	int i=0;
 	int null_desplazado=5;
@@ -24,7 +24,7 @@ void cifrado(unsigned char* cadena,unsigned char* cadena_procesada){
 
 }
 
-void descifrado(unsigned char* cadena_procesada,unsigned char* cadena_normalizada){
+void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada){
 	int i=0;
 	char valor_decimal;
 
