@@ -8,7 +8,7 @@ void swap(unsigned char *s, unsigned int i, unsigned int j) {
     s[j] = temp;
 }
 
-void rc4_init(unsigned char *key,unsigned int key_length,unsigned char* S) {
+void inicializar_rc4(unsigned char *key,unsigned int key_length,unsigned char* S) {
 	int i,j;
 
     for (i = 0; i < 256; i++){
@@ -23,18 +23,7 @@ void rc4_init(unsigned char *key,unsigned int key_length,unsigned char* S) {
 
     i = j = 0;
 }
-/*
-unsigned char rc4_output(unsigned char* S) {
-	int i=0;
-	int j=0;
-    i = (i + 1) & 255;
-    j = (j + S[i]) & 255;
 
-    swap(S, i, j);
-
-    return S[(S[i] + S[j]) & 255];
-}
-*/
 void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado) {
 	int i=0;
 	int j=0;

@@ -49,11 +49,11 @@ int file_reader_iterate(file_reader_t* self){
 */
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
-		rc4_init(clave_rc4, strlen((char*)clave_rc4),S);
+		inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S);
 
 		rc4_cifrar(S,buffer,buffer_procesado);
 		memset(S,0,sizeof(S));
-		rc4_init(clave_rc4, strlen((char*)clave_rc4),S);
+		inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S);
 
 		rc4_descifrar(S,buffer_procesado,buffer_normalizado);
 

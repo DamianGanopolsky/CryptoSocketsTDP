@@ -6,11 +6,7 @@
 
 void swap(unsigned char *s, unsigned int i, unsigned int j);
 
-void inicializar_rc4(unsigned char *key, unsigned int key_length);
-
-void rc4_init(unsigned char *key,unsigned int key_length,unsigned char* S);
-
-unsigned char rc4_output(unsigned char* S);
+void inicializar_rc4(unsigned char *key,unsigned int key_length,unsigned char* S);
 
 void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado);
 
