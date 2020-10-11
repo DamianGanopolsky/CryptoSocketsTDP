@@ -34,7 +34,8 @@ int file_reader_iterate(file_reader_t* self){
     //unsigned char S_servidor[256];
     //rc4_t rc4_cliente;
     //rc4_t rc4_servidor;
-    vigenere_t vigenere;
+    vigenere_t vigenere_cliente;
+    vigenere_t vigenere_servidor;
     //memset(S_cliente,0,sizeof(S_cliente));
     //memset(S_servidor,0,sizeof(S_servidor));
 
@@ -64,7 +65,8 @@ int file_reader_iterate(file_reader_t* self){
 
     char* clave_vigenere= "Secret";
 
-    inicializar_vigenere(&vigenere,strlen(clave_vigenere),longitud_mensaje);
+    inicializar_vigenere(&vigenere_cliente,strlen(clave_vigenere),longitud_mensaje);
+    inicializar_vigenere(&vigenere_servidor,strlen(clave_vigenere),longitud_mensaje);
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
@@ -91,8 +93,8 @@ int file_reader_iterate(file_reader_t* self){
 		//rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor,tamanio);
 
 	//	cifrado_cesar(buffer,buffer_procesado,clave_numerica);
-		cifrado_vigenere(buffer,buffer_procesado,clave_vigenere,&vigenere);
-		descifrado_vigenere(buffer_procesado,buffer_normalizado,clave_vigenere,&vigenere);
+		cifrado_vigenere(buffer,buffer_procesado,clave_vigenere,&vigenere_cliente);
+		descifrado_vigenere(buffer_procesado,buffer_normalizado,clave_vigenere,&vigenere_servidor,tamanio-1);
 		//descifrado_cesar(buffer_procesado,buffer_normalizado,clave_numerica);
 
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
