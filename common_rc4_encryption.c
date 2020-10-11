@@ -29,6 +29,7 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
 	int indice;
 
     while(k< strlen((char*)buffer)){
+	//while(k< 4){
 
         i = (i + 1) & 255;
         j = (j + S[i]) & 255;
@@ -47,6 +48,7 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,unsigned cha
 	int indice;
 
     while(k< strlen((char*)buffer_procesado)){
+//	while(k< 4){
 
         i = (i + 1) & 255;
         j = (j + S[i]) & 255;
