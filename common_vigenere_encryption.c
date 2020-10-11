@@ -1,5 +1,4 @@
 #include "common_vigenere_encryption.h"
-#define BUFFER_SIZE 64
 
 void inicializar_vigenere(vigenere_t* self,int longitud_clave,int longitud_mensaje){
 	self->posicion_cifrado=0;
@@ -7,9 +6,9 @@ void inicializar_vigenere(vigenere_t* self,int longitud_clave,int longitud_mensa
 
 }
 
-void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char* clave,vigenere_t* self){
+void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,unsigned char* clave,vigenere_t* self){
 
-	for (int k=0;k<BUFFER_SIZE;k++){
+	for (int k=0;k<strlen((char*)cadena);k++){
 
 		int indice_clave=(self->posicion_cifrado)%(self->longitud_clave);
 		cadena_procesada[k]=cadena[k]+clave[indice_clave];
@@ -18,7 +17,7 @@ void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char
 }
 
 
-void descifrado_vigenere(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,char* clave,vigenere_t* self,int tamanio_buffer){
+void descifrado_vigenere(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,unsigned char* clave,vigenere_t* self,int tamanio_buffer){
 
 	for (int k=0;k<tamanio_buffer;k++){
 
