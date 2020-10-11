@@ -27,35 +27,39 @@ int file_reader_uninit(file_reader_t* self){
 int file_reader_iterate(file_reader_t* self){
 
     unsigned char buffer[BUFFER_SIZE];
-    unsigned char buffer_procesado[BUFFER_SIZE];
-    unsigned char buffer_normalizado[BUFFER_SIZE];
-    unsigned char S_cliente[256];
-    unsigned char S_servidor[256];
-    rc4_t rc4_cliente;
-    rc4_t rc4_servidor;
+    memset(buffer,0,sizeof(buffer));
+   // unsigned char buffer_procesado[BUFFER_SIZE];
+    //unsigned char buffer_normalizado[BUFFER_SIZE];
+    //unsigned char S_cliente[256];
+    //unsigned char S_servidor[256];
+    //rc4_t rc4_cliente;
+    //rc4_t rc4_servidor;
   //  vigenere_t vigenere;
-    memset(S_cliente,0,sizeof(S_cliente));
-    memset(S_servidor,0,sizeof(S_servidor));
+    //memset(S_cliente,0,sizeof(S_cliente));
+    //memset(S_servidor,0,sizeof(S_servidor));
 
-    FILE* puntero;
+   // FILE* puntero;
 
-    puntero=fopen("client_a_server.txt","w");
+    //puntero=fopen("client_a_server.txt","w");
 
-	memset(buffer_procesado,0,sizeof(buffer_procesado));
-	memset(buffer,0,sizeof(buffer));
-	memset(buffer_normalizado,0,sizeof(buffer_normalizado));
+	//memset(buffer_procesado,0,sizeof(buffer_procesado));
+
+	//memset(buffer_normalizado,0,sizeof(buffer_normalizado));
+
+	int bytes_enviados=0;
+	int tamanio;
 
     fseek(self->fp, 0, SEEK_END);
-    int longitud_total = ftell(self->fp);
+    int longitud_mensaje = ftell(self->fp);
     rewind(self->fp);
 
-	unsigned char clave_rc4[]="queso";
-	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_cliente,&rc4_cliente,longitud_total);
-	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_servidor,&rc4_servidor,0);
-	int i_cliente=0;
-	int j_cliente=0;
-	int i_servidor=0;
-	int j_servidor=0;
+	unsigned char clave[]="Secret";
+	//inicializar_rc4(clave, strlen((char*)clave),S_cliente,&rc4_cliente,longitud_mensaje);
+	//inicializar_rc4(clave, strlen((char*)clave),S_servidor,&rc4_servidor,0);
+	//int i_cliente=0;
+	//int j_cliente=0;
+	//int i_servidor=0;
+	//int j_servidor=0;
 
    // char* clave_vigenere= "Secret";
 
@@ -64,19 +68,31 @@ int file_reader_iterate(file_reader_t* self){
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
+		if(longitud_mensaje-bytes_enviados<64){
+			tamanio=longitud_mensaje-bytes_enviados;
+		}
+		else{
+			tamanio=64;
+			bytes_enviados=bytes_enviados+64;
+		}
+	    unsigned char buffer_procesado[tamanio-1];
+		unsigned char buffer_normalizado[tamanio-1];
+		memset(buffer_procesado,0,sizeof(buffer_procesado));
+		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 
-		rc4_cifrar(S_cliente,buffer,buffer_procesado,&rc4_cliente,&i_cliente,&j_cliente);
 
-		fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
+		//rc4_cifrar(S_cliente,buffer,buffer_procesado,&rc4_cliente,&i_cliente,&j_cliente,tamanio);
+
+		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 		//memset(S_cliente,0,sizeof(S_cliente));
 	//	memset(S_servidor,0,sizeof(S_servidor));
 
-		rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor);
+		//rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor,tamanio);
 
-		//cifrado_cesar(buffer,buffer_procesado);
+		cifrado_cesar(buffer,buffer_procesado);
 		//cifrado_vigenere(buffer,buffer_procesado,clave_vigenere,&vigenere);
 		//descifrado_vigenere(buffer_procesado,buffer_normalizado,clave_vigenere,&vigenere);
-	//	descifrado_cesar(buffer_procesado,buffer_normalizado);
+		descifrado_cesar(buffer_procesado,buffer_normalizado);
 
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
 		memset(buffer,0,sizeof(buffer));

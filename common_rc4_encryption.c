@@ -26,12 +26,12 @@ void inicializar_rc4(unsigned char *key,unsigned int key_length,unsigned char* S
     i = j = 0;
 }
 
-void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado,rc4_t* self,int* i,int* j) {
+void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado,rc4_t* self,int* i,int* j,int tamanio) {
 
 	size_t k=0;
 	int indice;
 
-	while(k<BUFFER_SIZE){
+	while(k<tamanio){
 
 		if((buffer[k]=='\0')||(buffer[k]=='\n')) break;
 
@@ -48,13 +48,13 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
     }
 }
 
-void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j) {
+void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j,int tamanio) {
 
 	int k=0;
 	int indice;
 
   //  while(k< strlen((char*)buffer_procesado)){
-	while(k<BUFFER_SIZE){
+	while(k<tamanio){
 
 		//if(buffer_procesado[k]=='\0') break;
 
