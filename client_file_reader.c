@@ -6,7 +6,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 6
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
@@ -40,7 +40,10 @@ int file_reader_iterate(file_reader_t* self){
 
 	unsigned char clave_rc4[]="queso";
 
-
+	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S);
+	memset(S,0,sizeof(S));
+	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S);
+	memset(S,0,sizeof(S));
   /*  char* clave_vigenere= "Secret";
     fseek(self->fp, 0, SEEK_END);
     int longitud_total = ftell(self->fp);
@@ -63,7 +66,6 @@ int file_reader_iterate(file_reader_t* self){
 	//	descifrado_cesar(buffer_procesado,buffer_normalizado);
 
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
-
 		memset(buffer,0,sizeof(buffer));
 		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 

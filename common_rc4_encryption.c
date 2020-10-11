@@ -1,7 +1,5 @@
 #include "common_rc4_encryption.h"
 
-#define BUFFER_SIZE 64
-
 void swap(unsigned char *s, unsigned int i, unsigned int j) {
     unsigned char temp = s[i];
     s[i] = s[j];
