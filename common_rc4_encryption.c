@@ -30,7 +30,6 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
 
 	size_t k=0;
 	int indice;
-	printf("longitud %li \n",strlen((char*)buffer));
 
 	while(k<BUFFER_SIZE){
 

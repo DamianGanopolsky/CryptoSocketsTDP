@@ -37,8 +37,9 @@ int file_reader_iterate(file_reader_t* self){
     memset(S_cliente,0,sizeof(S_cliente));
     memset(S_servidor,0,sizeof(S_servidor));
 
+    FILE* puntero;
 
-
+    puntero=fopen("client_a_server.txt","w");
 
 	memset(buffer_procesado,0,sizeof(buffer_procesado));
 	memset(buffer,0,sizeof(buffer));
@@ -48,7 +49,7 @@ int file_reader_iterate(file_reader_t* self){
     int longitud_total = ftell(self->fp);
     rewind(self->fp);
 
-	unsigned char clave_rc4[]="Secret";
+	unsigned char clave_rc4[]="queso";
 	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_cliente,&rc4_cliente,longitud_total);
 	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_servidor,&rc4_servidor,0);
 	int i_cliente=0;
@@ -65,6 +66,8 @@ int file_reader_iterate(file_reader_t* self){
 
 
 		rc4_cifrar(S_cliente,buffer,buffer_procesado,&rc4_cliente,&i_cliente,&j_cliente);
+
+		fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 		//memset(S_cliente,0,sizeof(S_cliente));
 	//	memset(S_servidor,0,sizeof(S_servidor));
 
