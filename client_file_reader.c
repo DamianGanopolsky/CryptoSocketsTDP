@@ -6,7 +6,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 
-#define BUFFER_SIZE 2
+#define BUFFER_SIZE 64
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
@@ -48,7 +48,7 @@ int file_reader_iterate(file_reader_t* self){
     int longitud_total = ftell(self->fp);
     rewind(self->fp);
 
-	unsigned char clave_rc4[]="queso";
+	unsigned char clave_rc4[]="Secret";
 	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_cliente,&rc4_cliente,longitud_total);
 	inicializar_rc4(clave_rc4, strlen((char*)clave_rc4),S_servidor,&rc4_servidor,0);
 	int i_cliente=0;
