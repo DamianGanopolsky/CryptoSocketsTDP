@@ -12,7 +12,7 @@ typedef struct {
 
 void swap(unsigned char *s, unsigned int i, unsigned int j);
 
-void inicializar_rc4(unsigned char *key,unsigned int key_length,unsigned char* S,rc4_t* self,int longitud_mensaje);
+void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S,rc4_t* self,int longitud_mensaje);
 
 void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado,rc4_t* self,int* i,int* j,int tamanio);
 

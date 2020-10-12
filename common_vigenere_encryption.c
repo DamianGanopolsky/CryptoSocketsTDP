@@ -6,7 +6,7 @@ void inicializar_vigenere(vigenere_t* self,int longitud_clave,int longitud_mensa
 
 }
 
-void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,unsigned char* clave,vigenere_t* self){
+void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char* clave,vigenere_t* self){
 
 	for (int k=0;k<strlen((char*)cadena);k++){
 
@@ -17,7 +17,7 @@ void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,unsi
 }
 
 
-void descifrado_vigenere(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,unsigned char* clave,vigenere_t* self,int tamanio_buffer){
+void descifrado_vigenere(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,char* clave,vigenere_t* self,int tamanio_buffer){
 
 	for (int k=0;k<tamanio_buffer;k++){
 

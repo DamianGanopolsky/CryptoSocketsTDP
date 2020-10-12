@@ -8,7 +8,7 @@ void swap(unsigned char *s, unsigned int i, unsigned int j) {
     s[j] = temp;
 }
 
-void inicializar_rc4(unsigned char *key,unsigned int key_length,unsigned char* S,rc4_t* self,int longitud_mensaje) {
+void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S,rc4_t* self,int longitud_mensaje) {
 	int i,j;
 	self->posicion_cifrado=0;
 	self->longitud_mensaje=longitud_mensaje;
