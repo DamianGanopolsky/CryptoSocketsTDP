@@ -15,7 +15,7 @@ extension = c
 # NOTA: No poner cabeceras (.h).
 fuentes_client = client_file_reader.c client_main.c
 #fuentes_server = entrada.cpp
-fuentes_common = common_cesar_encryption.c common_vigenere_encryption.c common_rc4_encryption.c common_operaciones_buffer.c
+fuentes_common = common_cesar_encryption.c common_vigenere_encryption.c common_rc4_encryption.c common_operaciones_buffer.c common_socket.c
 
 # Si usa funciones de math.h, descomentar (quitar el '#' a) la siguiente lÃ­nea.
 math = si

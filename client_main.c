@@ -3,14 +3,22 @@
 #include <stdlib.h>
 
 #include "client_file_reader.h"
+#include "socket.h"
 
 
 
 int main(int argc, char const *argv[]) {
 
     file_reader_t file_reader;
+    socket_t socket;
+
+    socket_init(&socket);
+
+   // socket_connect
 
     file_reader_init(&file_reader, argv[6]); //ACA INICIALIZO MI TDA READER
+
+
 
     int tamanio_clave= strlen(argv[4])-6;
     char subbuff[tamanio_clave+1];
@@ -31,6 +39,6 @@ int main(int argc, char const *argv[]) {
     }
 
     file_reader_uninit(&file_reader); //ACA CIERRO MI TDA READER
-
+    socket_uninit(&socket);
 	return 0;
 }

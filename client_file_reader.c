@@ -5,6 +5,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 #include "common_operaciones_buffer.h"
+#include "socket.h"
 
 #define BUFFER_SIZE 64
 
