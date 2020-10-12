@@ -6,7 +6,7 @@
 #include "common_rc4_encryption.h"
 #include "common_operaciones_buffer.h"
 
-#define BUFFER_SIZE 2
+#define BUFFER_SIZE 3
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
@@ -56,14 +56,15 @@ int file_reader_iterate_cesar(file_reader_t* self,int clave){
 		if(tamanio<1) break;
 
 	    unsigned char buffer_procesado[tamanio];
-		unsigned char buffer_normalizado[tamanio];
-		limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
+		//unsigned char buffer_normalizado[tamanio];
+		//limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
+		memset(buffer_procesado,0,sizeof(buffer_procesado));
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
-		cifrado_cesar(buffer,buffer_procesado,clave);
-		descifrado_cesar(buffer_procesado,buffer_normalizado,clave);
+		cifrado_cesar(buffer,buffer_procesado,clave,tamanio);
+		//descifrado_cesar(buffer_procesado,buffer_normalizado,clave,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));
-		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
+		//memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 
 	}
     return 0;

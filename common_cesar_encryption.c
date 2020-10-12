@@ -1,12 +1,11 @@
 #include "common_cesar_encryption.h"
-#define BUFFER_SIZE 64
 
-void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int clave_numerica){
+void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int clave_numerica,int tamanio){
 
 	int i=0;
 	char caracter;
 
-	while((i<BUFFER_SIZE)){
+	while((i<tamanio)){
 
 		caracter=*(cadena+i);
 		caracter=caracter+clave_numerica;
@@ -17,11 +16,11 @@ void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int cla
 
 }
 
-void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,int clave_numerica){
+void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,int clave_numerica,int tamanio){
 	int i=0;
 	char valor_decimal;
 
-	while((i<BUFFER_SIZE)){
+	while((i<tamanio)){
 
 		valor_decimal=*(cadena_procesada+i);
 		valor_decimal=valor_decimal-clave_numerica;
