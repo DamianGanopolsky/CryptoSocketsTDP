@@ -6,7 +6,7 @@
 #include "common_rc4_encryption.h"
 #include "common_operaciones_buffer.h"
 
-#define BUFFER_SIZE 3
+#define BUFFER_SIZE 64
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
@@ -76,9 +76,10 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave){
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
 	int longitud_mensaje=file_reader_length(self);
-	vigenere_t vigenere_cliente,vigenere_servidor;
+	//vigenere_t vigenere_cliente,vigenere_servidor;
+	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave),longitud_mensaje);
-    inicializar_vigenere(&vigenere_servidor,strlen((char*)clave),longitud_mensaje);
+    //inicializar_vigenere(&vigenere_servidor,strlen((char*)clave),longitud_mensaje);
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
@@ -92,14 +93,15 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave){
 		if(tamanio<1) break;
 
 	    unsigned char buffer_procesado[tamanio];
-		unsigned char buffer_normalizado[tamanio];
-		limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
+	    memset(buffer_procesado,0,sizeof(buffer_procesado));
+		//unsigned char buffer_normalizado[tamanio];
+		//limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 		cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente);
-		descifrado_vigenere(buffer_procesado,buffer_normalizado,clave,&vigenere_servidor,tamanio);
+		//descifrado_vigenere(buffer_procesado,buffer_normalizado,clave,&vigenere_servidor,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));
-		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
+		//memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 
 	}
 
@@ -114,12 +116,15 @@ int file_reader_iterate_rc4(file_reader_t* self,char* clave){
 	int bytes_enviados=0,tamanio=0;
 	int longitud_mensaje=file_reader_length(self);
     unsigned char S_cliente[256];
-    unsigned char S_servidor[256];
-    limpiar_buffers(S_cliente,sizeof(S_cliente),S_servidor,sizeof(S_servidor));
-    rc4_t rc4_cliente,rc4_servidor;
+    memset(S_cliente,0,sizeof(S_cliente));
+    //unsigned char S_servidor[256];
+    //limpiar_buffers(S_cliente,sizeof(S_cliente),S_servidor,sizeof(S_servidor));
+   // rc4_t rc4_cliente,rc4_servidor;
+    rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),S_cliente,&rc4_cliente,longitud_mensaje);
-	inicializar_rc4(clave, strlen((char*)clave),S_servidor,&rc4_servidor,0);
-	int i_cliente=0,j_cliente=0, i_servidor=0, j_servidor=0;
+	//inicializar_rc4(clave, strlen((char*)clave),S_servidor,&rc4_servidor,0);
+	//int i_cliente=0,j_cliente=0, i_servidor=0, j_servidor=0;
+	int i_cliente=0,j_cliente=0;
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
@@ -133,15 +138,16 @@ int file_reader_iterate_rc4(file_reader_t* self,char* clave){
 		if(tamanio<1) break;
 
 	    unsigned char buffer_procesado[tamanio];
-		unsigned char buffer_normalizado[tamanio];
-		limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
+	    memset(buffer_procesado,0,sizeof(buffer_procesado));
+		//unsigned char buffer_normalizado[tamanio];
+		//limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 
 		rc4_cifrar(S_cliente,buffer,buffer_procesado,&rc4_cliente,&i_cliente,&j_cliente,tamanio);
-		rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor,tamanio);
+		//rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));
-		memset(buffer_normalizado,0,sizeof(buffer_normalizado));
+		//memset(buffer_normalizado,0,sizeof(buffer_normalizado));
 
 	}
 
