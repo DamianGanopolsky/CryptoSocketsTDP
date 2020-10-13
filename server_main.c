@@ -25,22 +25,6 @@ int main(int argc, char const *argv[]){
 	recv(socket_peer.fd,&client_message,sizeof(client_message),0);
 
 	printf("The client sent the data: %s \n",client_message);
-	/*
-	char buf[16];
-	int bytes=0;
-
-	while(bytes==0){
-		bytes = recv(socket_peer.fd, buf,12, 0);
-		buf[12] = 0;
-		printf("Recibido %d bytes: %s\n", bytes, buf);
-	}
-*/
-	//int bytes = recv(socket_peer.fd, buf,12, 0);
-
-
-	//recv(socket.fd,buffer,20,0);
-
-	//printf("el mensaje es %s \n",buffer);
 
 	socket_uninit(&socket);
 

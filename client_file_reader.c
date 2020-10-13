@@ -1,12 +1,4 @@
 #include "client_file_reader.h"
-
-
-#include "common_cesar_encryption.h"
-#include "common_vigenere_encryption.h"
-#include "common_rc4_encryption.h"
-#include "common_operaciones_buffer.h"
-#include "common_socket.h"
-
 #define BUFFER_SIZE 64
 
 
@@ -40,11 +32,12 @@ int file_reader_length(file_reader_t* self){
 
 }
 
-int file_reader_iterate_cesar(file_reader_t* self,int clave){
+int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket){
 
 	unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
 	int longitud_mensaje=file_reader_length(self);
+	int s;
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
@@ -63,6 +56,11 @@ int file_reader_iterate_cesar(file_reader_t* self,int clave){
 		memset(buffer_procesado,0,sizeof(buffer_procesado));
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 		cifrado_cesar(buffer,buffer_procesado,clave,tamanio);
+
+		s=socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
+
+		printf("No se pudieron enviar %i caracteres \n",s);
+
 		//descifrado_cesar(buffer_procesado,buffer_normalizado,clave,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));

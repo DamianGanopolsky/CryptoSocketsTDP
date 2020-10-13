@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include "common_cesar_encryption.h"
+#include "common_vigenere_encryption.h"
+#include "common_rc4_encryption.h"
+#include "common_operaciones_buffer.h"
+#include "common_socket.h"
 
 typedef struct{
     FILE* fp;
@@ -19,6 +24,6 @@ int file_reader_iterate_rc4(file_reader_t* self,char* clave);
 
 int file_reader_iterate_vigenere(file_reader_t* self,char* clave);
 
-int file_reader_iterate_cesar(file_reader_t* self,int clave);
+int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket);
 
 

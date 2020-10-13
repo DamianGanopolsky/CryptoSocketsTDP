@@ -105,15 +105,15 @@ void socket_accept(socket_t *listener, socket_t *peer){
 
 }
 
-ssize_t socket_send(socket_t *self, const char *buffer, size_t length){
+ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 
 	ssize_t caracteres_enviados;
-	ssize_t caracteres_totales=0;
-	const char* puntero_a_caracter_actual;
+	ssize_t longitud_restante=length;
+	unsigned char* puntero_a_caracter_actual=buffer;
 
-    while(caracteres_totales<length-1){
+    while(longitud_restante>0){
 
-    	caracteres_enviados=send(self->fd,buffer,sizeof(buffer),MSG_NOSIGNAL);
+    	caracteres_enviados=send(self->fd,puntero_a_caracter_actual,longitud_restante,MSG_NOSIGNAL);
 
         if(caracteres_enviados==-1){
         	if(errno==EAGAIN) printf("error es eagain \n");
@@ -123,11 +123,12 @@ ssize_t socket_send(socket_t *self, const char *buffer, size_t length){
         	else{
         		printf("otro error \n");
         	}
+        	continue;
         }
         puntero_a_caracter_actual=caracteres_enviados+puntero_a_caracter_actual;
-        caracteres_totales=caracteres_totales+caracteres_enviados;
+        longitud_restante=longitud_restante-caracteres_enviados;
     }
-    return caracteres_totales;
+    return longitud_restante;
 }
 
 
