@@ -119,7 +119,7 @@ endif
 
 # Si no especifica archivos, tomo todos.
 fuentes_client ?= $(wildcard client*.$(extension)) $(wildcard */client*.$(extension))
-fuentes_server ?= $(wildcard server*.$(extension)) $(wildcard */server*.$(extension))
+#fuentes_server ?= $(wildcard server*.$(extension)) $(wildcard */server*.$(extension))
 fuentes_common ?= $(wildcard common*.$(extension)) $(wildcard */common*.$(extension))
 directorios = $(shell find . -type d -regex '.*\w+')
 
@@ -142,11 +142,11 @@ endif
 
 .PHONY: all clean
 
-all: client server
+all: client
 
 o_common_files = $(patsubst %.$(extension),%.o,$(fuentes_common))
 o_client_files = $(patsubst %.$(extension),%.o,$(fuentes_client))
-o_server_files = $(patsubst %.$(extension),%.o,$(fuentes_server))
+#o_server_files = $(patsubst %.$(extension),%.o,$(fuentes_server))
 
 client: $(o_common_files) $(o_client_files)
 	@if [ -z "$(o_client_files)" ]; \

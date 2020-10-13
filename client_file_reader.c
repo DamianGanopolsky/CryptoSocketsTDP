@@ -5,7 +5,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 #include "common_operaciones_buffer.h"
-#include "socket.h"
+#include "common_socket.h"
 
 #define BUFFER_SIZE 64
 
@@ -16,6 +16,7 @@ int file_reader_init(file_reader_t* self, const char* file_name){
 		self->fp=fopen(file_name,"rb");
 	}
 	else{
+		printf("paso por aca\n");
 		self->fp= stdin;
 	}
     //ACA SE PUEDEN HACER VERIFICACIONES

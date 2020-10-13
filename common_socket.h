@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <errno.h>
 
 typedef struct {
 	int fd;

@@ -4,6 +4,7 @@
 
 void socket_init(socket_t *self){
 	self->fd=-1;
+	close(self->fd);
 }
 
 void socket_uninit(socket_t *self){
@@ -45,6 +46,7 @@ void socket_connect(socket_t *self, const char *host, const char *service){
 
         close(sfd);
     }
+    self->fd=sfd;
 
     if (rp == NULL) {               /* No address succeeded */
     	fprintf(stderr, "Could not connect\n");
@@ -102,5 +104,31 @@ void socket_accept(socket_t *listener, socket_t *peer){
     peer->fd = newSocket;
 
 }
+
+ssize_t socket_send(socket_t *self, const char *buffer, size_t length){
+
+	ssize_t caracteres_enviados;
+	ssize_t caracteres_totales=0;
+	const char* puntero_a_caracter_actual;
+
+    while(caracteres_totales<length-1){
+
+    	caracteres_enviados=send(self->fd,buffer,sizeof(buffer),MSG_NOSIGNAL);
+
+        if(caracteres_enviados==-1){
+        	if(errno==EAGAIN) printf("error es eagain \n");
+
+        	else if(errno==EBADF) printf("error es EBADF \n");
+
+        	else{
+        		printf("otro error \n");
+        	}
+        }
+        puntero_a_caracter_actual=caracteres_enviados+puntero_a_caracter_actual;
+        caracteres_totales=caracteres_totales+caracteres_enviados;
+    }
+    return caracteres_totales;
+}
+
 
 

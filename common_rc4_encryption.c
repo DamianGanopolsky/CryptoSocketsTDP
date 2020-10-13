@@ -44,7 +44,6 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
         buffer_procesado[k]=buffer[k]^S[indice];
         k++;
 
-
     }
 }
 

@@ -2,8 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+
 #include "client_file_reader.h"
-#include "socket.h"
+#include "common_socket.h"
 
 
 
@@ -14,11 +15,47 @@ int main(int argc, char const *argv[]) {
 
     socket_init(&socket);
 
-   // socket_connect
+    socket_connect(&socket, argv[1], argv[2]);
 
-    file_reader_init(&file_reader, argv[6]); //ACA INICIALIZO MI TDA READER
+    //const char* buffer="ho";
+   /* const char msg[] = "Hello client";
+    int bytes;
+    bytes=-1;
+   // send(socket.fd,msg,3,0);
+    while(bytes==-1){
+    	bytes = send(socket.fd, msg, sizeof(msg) - 1, MSG_NOSIGNAL);
+    	printf("Enviado %d bytes\n", bytes);
 
+    }
+*/
+    int s;
+    char client_message[17]="YOu have reached";
+    printf("The server sent the data: %s \n",client_message);
+    printf("el socket fd es %i \n",socket.fd);
+   // s=send(socket.fd,client_message,sizeof(client_message),MSG_NOSIGNAL);
 
+    s=socket_send(&socket,client_message,sizeof(client_message));
+    printf("Se enviaron %i caracteres \n",s);
+/*
+    if(s==-1){
+    	if(errno==EAGAIN) printf("error es eagain \n");
+
+    	else if(errno==EBADF) printf("error es EBADF \n");
+
+    	else{
+    		printf("otro error \n");
+    	}
+    }
+*/
+    for(int i=0;i<argc;i++){
+    	printf("argumento %i es %s \n",i,argv[i]);
+    }
+    if(argc<6){
+    	file_reader_init(&file_reader,NULL);
+
+    }
+
+    else file_reader_init(&file_reader, argv[6]); //ACA INICIALIZO MI TDA READER
 
     int tamanio_clave= strlen(argv[4])-6;
     char subbuff[tamanio_clave+1];
