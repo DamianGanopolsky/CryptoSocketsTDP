@@ -114,7 +114,7 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave,socket_t* socke
 }
 
 
-int file_reader_iterate_rc4(file_reader_t* self,char* clave){
+int file_reader_iterate_rc4(file_reader_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
@@ -148,6 +148,8 @@ int file_reader_iterate_rc4(file_reader_t* self,char* clave){
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 
 		rc4_cifrar(S_cliente,buffer,buffer_procesado,&rc4_cliente,&i_cliente,&j_cliente,tamanio);
+
+		socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 		//rc4_descifrar(S_servidor,buffer_procesado,buffer_normalizado,&rc4_servidor,&i_servidor,&j_servidor,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));

@@ -3,3 +3,9 @@ VIGENERE PAN:
 ./server 8080 --method=vigenere --key=queso
 
 ./client 127.0.0.1 8080 --method=vigenere --key=queso < __client_stdin__
+
+RC4 PAN:
+
+./server 8080 --method=rc4 --key=queso
+
+./client 127.0.0.1 8080 --method=rc4 --key=queso < __client_stdin__

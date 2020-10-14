@@ -2,6 +2,7 @@
 #include "server_server.h"
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
+#include "common_rc4_encryption.h"
 #define BUFFER_ESPERADO 64
 
 /*
@@ -65,21 +66,50 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 
 		if(recibidos<BUFFER_ESPERADO){
+
 			unsigned char ultimo_mensaje[recibidos+1];
 			unsigned char ultimo_mensaje_desencriptado[recibidos];
-			//memset(ultimo_mensaje,0,sizeof(ultimo_mensaje));
 			memcpy(ultimo_mensaje,mensaje,recibidos);
 			descifrado_vigenere(ultimo_mensaje,ultimo_mensaje_desencriptado,clave,&vigenere,recibidos);
-			//descifrado_cesar(ultimo_mensaje,ultimo_mensaje_desencriptado,clave,recibidos);
-			//descifrar(ultimo_mensaje,ultimo_mensaje_desencriptado,metodo,subbuff,puntero_a_cifrador,recibidos);
 			ultimo_mensaje_desencriptado[recibidos]=0;
 			printf("El mensaje es %s \n",ultimo_mensaje_desencriptado);
 			break;
 		}
 		unsigned char mensaje_desencriptado[64];
 		descifrado_vigenere(mensaje,mensaje_desencriptado,clave,&vigenere,BUFFER_ESPERADO);
-		//descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		//descifrar(mensaje,mensaje_desencriptado,metodo,subbuff,puntero_a_cifrador,BUFFER_ESPERADO);
+		printf("El mensaje es %s \n",mensaje_desencriptado);
+	}
+}
+
+
+void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
+
+	unsigned char mensaje[64];
+	ssize_t recibidos=BUFFER_ESPERADO;
+	rc4_t rc4;
+	unsigned char S[256];
+	memset(S,0,sizeof(S));
+	inicializar_rc4(clave,strlen((char*)clave),S,&rc4,0);
+
+	int i=0,j=0;
+
+	while(recibidos==BUFFER_ESPERADO){
+
+		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
+
+		if(recibidos<BUFFER_ESPERADO){
+
+			unsigned char ultimo_mensaje[recibidos+1];
+			unsigned char ultimo_mensaje_desencriptado[recibidos];
+			memcpy(ultimo_mensaje,mensaje,recibidos);
+			//descifrado_vigenere(ultimo_mensaje,ultimo_mensaje_desencriptado,clave,&vigenere,recibidos);
+			rc4_descifrar(S,ultimo_mensaje,ultimo_mensaje_desencriptado,&rc4,&i,&j,recibidos);
+			ultimo_mensaje_desencriptado[recibidos]=0;
+			printf("El mensaje es %s \n",ultimo_mensaje_desencriptado);
+			break;
+		}
+		unsigned char mensaje_desencriptado[64];
+		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
 		printf("El mensaje es %s \n",mensaje_desencriptado);
 	}
 }
@@ -101,6 +131,10 @@ void recibir_mensajes(socket_t* socket_peer,const char* metodo,const char* clave
     if(strcmp(metodo,"--method=vigenere")==0){
     	recibir_mensaje_vigenere(socket_peer,subbuff);
     }
+
+    if(strcmp(metodo,"--method=rc4")==0){
+        	recibir_mensaje_rc4(socket_peer,subbuff);
+        }
 }
 /*
     if(strcmp(metodo,"--method=vigenere")==0){

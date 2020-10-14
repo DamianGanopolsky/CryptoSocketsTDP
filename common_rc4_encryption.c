@@ -36,7 +36,7 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
 		if((buffer[k]=='\0')||(buffer[k]=='\n')) break;
 
     	self->posicion_cifrado++;
-    	if(self->posicion_cifrado==self->longitud_mensaje) break;
+    	//if(self->posicion_cifrado==self->longitud_mensaje) break;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
         swap(S, *i, *j);
