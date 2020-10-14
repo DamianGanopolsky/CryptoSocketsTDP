@@ -1,5 +1,5 @@
 #include "client_file_reader.h"
-#define BUFFER_SIZE 2
+#define BUFFER_SIZE 64
 
 
 int file_reader_init(file_reader_t* self, const char* file_name){
