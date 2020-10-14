@@ -73,14 +73,14 @@ int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket){
 
 }
 
-int file_reader_iterate_vigenere(file_reader_t* self,char* clave){
+int file_reader_iterate_vigenere(file_reader_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
 	int longitud_mensaje=file_reader_length(self);
 	//vigenere_t vigenere_cliente,vigenere_servidor;
 	vigenere_t vigenere_cliente;
-    inicializar_vigenere(&vigenere_cliente,strlen((char*)clave),longitud_mensaje);
+    inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
     //inicializar_vigenere(&vigenere_servidor,strlen((char*)clave),longitud_mensaje);
 
 	while (!feof(self->fp)) {
@@ -100,6 +100,8 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave){
 		//limpiar_buffers(buffer_procesado,sizeof(buffer_procesado),buffer_normalizado,sizeof(buffer_normalizado));
 		//fwrite(buffer_procesado,1,BUFFER_SIZE,puntero);
 		cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente);
+
+		socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 		//descifrado_vigenere(buffer_procesado,buffer_normalizado,clave,&vigenere_servidor,tamanio);
 
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));

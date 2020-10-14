@@ -36,7 +36,8 @@ int main(int argc, char const *argv[]) {
     }
 
     if(strcmp(argv[3],"--method=vigenere")==0){
-    	file_reader_iterate_vigenere(&file_reader,subbuff);
+    	file_reader_iterate_vigenere(&file_reader,subbuff,&socket);
+    	shutdown(socket.fd,SHUT_RDWR);
     }
 
     if(strcmp(argv[3],"--method=rc4")==0){

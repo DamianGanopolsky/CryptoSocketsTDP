@@ -9,7 +9,7 @@ typedef struct {
 	int longitud_clave;
 } vigenere_t;
 
-void inicializar_vigenere(vigenere_t* self,int longitud,int longitud_mensaje);
+void inicializar_vigenere(vigenere_t* self,int longitud);
 
 void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char* clave,vigenere_t* self);
 
