@@ -1,5 +1,5 @@
 #include "common_socket.h"
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 2
 #define LONGITUD_COLA 10
 
 void socket_init(socket_t *self){
@@ -150,7 +150,7 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 
 		else if(caracteres_recibidos==0){
 			//memcpy(buffer_final,buffer,64-longitud_restante);
-			return 64-longitud_restante;
+			return BUFFER_SIZE-longitud_restante;
 		}
 
 		else{
@@ -159,7 +159,7 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 		}
 	}
 	//memcpy(buffer_final,buffer,64);
-	return 64-longitud_restante;
+	return BUFFER_SIZE-longitud_restante;
 
 }
 
