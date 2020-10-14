@@ -48,7 +48,9 @@ int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket){
 
 		bytes_enviados=bytes_enviados+tamanio;
 
-		if(tamanio<1) break;
+		if(tamanio<1){
+			break;
+		}
 
 	    unsigned char buffer_procesado[tamanio];
 		//unsigned char buffer_normalizado[tamanio];

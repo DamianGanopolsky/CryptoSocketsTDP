@@ -17,15 +17,6 @@ int main(int argc, char const *argv[]) {
 
     socket_connect(&socket, argv[1], argv[2]);
 
-    //int s;
-   // char client_message[17]="YOu have reached";
-   // printf("The server sent the data: %s \n",client_message);
-   // printf("el socket fd es %i \n",socket.fd);
-   // s=send(socket.fd,client_message,sizeof(client_message),MSG_NOSIGNAL);
-
-   // s=socket_send(&socket,client_message,sizeof(client_message));
-    //printf("No se pudieron enviar %i caracteres \n",s);
-
     if(argc<6){
     	file_reader_init(&file_reader,NULL);
 
@@ -41,6 +32,7 @@ int main(int argc, char const *argv[]) {
     if(atoi(subbuff)!=0){
     	int clave_numerica=atoi(subbuff);
     	file_reader_iterate_cesar(&file_reader,clave_numerica,&socket);
+    	shutdown(socket.fd,SHUT_RDWR);
     }
 
     if(strcmp(argv[3],"--method=vigenere")==0){
