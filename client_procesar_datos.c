@@ -1,4 +1,4 @@
-#include "procesar_datos.h"
+#include "client_procesar_datos.h"
 #define BUFFER_SIZE 64
 
 
@@ -34,7 +34,7 @@ int longitud_archivo(archivo_t* self){
 int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 
 	unsigned char buffer[BUFFER_SIZE];
-	int bytes_enviados=0,tamanio=0;
+	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(self);
 	//int s;
 
@@ -66,7 +66,7 @@ int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
-	int bytes_enviados=0,tamanio=0;
+	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(self);
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
@@ -98,7 +98,7 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 int enviar_datos_rc4(archivo_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
-	int bytes_enviados=0,tamanio=0;
+	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(self);
     unsigned char S_cliente[256];
     memset(S_cliente,0,sizeof(S_cliente));

@@ -3,10 +3,11 @@
 void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int clave_numerica,int tamanio){
 
 	int i=0;
-	char caracter;
+
 
 	while((i<tamanio)){
 
+		char caracter;
 		caracter=*(cadena+i);
 		caracter=caracter+clave_numerica;
 		caracter=caracter%256;
