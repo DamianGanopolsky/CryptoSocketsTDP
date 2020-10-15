@@ -1,0 +1,50 @@
+CESAR PAN:
+./server 8080 --method=cesar --key=5
+./client 127.0.0.1 8080 --method=cesar --key=5 < __client_stdin__
+
+VIGENERE PAN:
+
+./server 8080 --method=vigenere --key=queso
+./client 127.0.0.1 8080 --method=vigenere --key=queso < __client_stdin__
+
+RC4 PAN:
+
+./server 8080 --method=rc4 --key=queso
+./client 127.0.0.1 8080 --method=rc4 --key=queso < __client_stdin__
+
+VIGENERE LATIN:
+
+./server 8080 --method=vigenere --key=Secret
+./client 127.0.0.1 8080 --method=vigenere --key=Secret < __client_stdin__
+
+RC4 LATIN:
+
+./server 8080 --method=rc4 --key=Secret
+./client 127.0.0.1 8080 --method=rc4 --key=Secret < __client_stdin__
+
+
+CON VALGRIND
+
+CESAR PAN:
+valgrind ./server 8080 --method=cesar --key=5
+valgrind ./client 127.0.0.1 8080 --method=cesar --key=5 < __client_stdin__
+
+VIGENERE PAN:
+
+valgrind ./server 8080 --method=vigenere --key=queso
+valgrind ./client 127.0.0.1 8080 --method=vigenere --key=queso < __client_stdin__
+
+RC4 PAN:
+
+valgrind ./server 8080 --method=rc4 --key=queso
+valgrind ./client 127.0.0.1 8080 --method=rc4 --key=queso < __client_stdin__
+
+VIGENERE LATIN:
+
+valgrind ./server 8080 --method=vigenere --key=Secret
+valgrind ./client 127.0.0.1 8080 --method=vigenere --key=Secret < __client_stdin__
+
+RC4 LATIN:
+
+valgrind ./server 8080 --method=rc4 --key=Secret
+valgrind ./client 127.0.0.1 8080 --method=rc4 --key=Secret < __client_stdin__

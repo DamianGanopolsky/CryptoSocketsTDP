@@ -1,8 +1,8 @@
-#include "client_file_reader.h"
+#include "procesar_datos.h"
 #define BUFFER_SIZE 64
 
 
-int file_reader_init(file_reader_t* self, const char* file_name){
+int abrir_archivo(archivo_t* self, const char* file_name){
 
 	if(file_name!=NULL){
 		self->fp=fopen(file_name,"rb");
@@ -15,14 +15,14 @@ int file_reader_init(file_reader_t* self, const char* file_name){
 }
 
 
-int file_reader_uninit(file_reader_t* self){
+int cerrar_archivo(archivo_t* self){
     if(self->fp != stdin){
         fclose(self->fp);
     }
     return 0;
 }
 
-int file_reader_length(file_reader_t* self){
+int longitud_archivo(archivo_t* self){
 
     fseek(self->fp, 0, SEEK_END);
     int longitud_mensaje = ftell(self->fp);
@@ -31,11 +31,11 @@ int file_reader_length(file_reader_t* self){
 
 }
 
-int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket){
+int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 
 	unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
-	int longitud_mensaje=file_reader_length(self);
+	int longitud_mensaje=longitud_archivo(self);
 	//int s;
 
 	while (!feof(self->fp)) {
@@ -63,11 +63,11 @@ int file_reader_iterate_cesar(file_reader_t* self,int clave,socket_t* socket){
 
 }
 
-int file_reader_iterate_vigenere(file_reader_t* self,char* clave,socket_t* socket){
+int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
-	int longitud_mensaje=file_reader_length(self);
+	int longitud_mensaje=longitud_archivo(self);
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
 
@@ -84,7 +84,7 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave,socket_t* socke
 
 	    unsigned char buffer_procesado[tamanio];
 	    memset(buffer_procesado,0,sizeof(buffer_procesado));
-		cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente);
+		cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,tamanio);
 		socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 		limpiar_buffers(buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado));
 
@@ -95,11 +95,11 @@ int file_reader_iterate_vigenere(file_reader_t* self,char* clave,socket_t* socke
 }
 
 
-int file_reader_iterate_rc4(file_reader_t* self,char* clave,socket_t* socket){
+int enviar_datos_rc4(archivo_t* self,char* clave,socket_t* socket){
 
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio=0;
-	int longitud_mensaje=file_reader_length(self);
+	int longitud_mensaje=longitud_archivo(self);
     unsigned char S_cliente[256];
     memset(S_cliente,0,sizeof(S_cliente));
     rc4_t rc4_cliente;

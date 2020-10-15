@@ -6,9 +6,10 @@ void inicializar_vigenere(vigenere_t* self,int longitud_clave){
 
 }
 
-void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char* clave,vigenere_t* self){
+void cifrado_vigenere(unsigned char* cadena,unsigned char* cadena_procesada,char* clave,vigenere_t* self,int tamanio){
 
-	for (int k=0;k<strlen((char*)cadena);k++){
+	//for (int k=0;k<strlen((char*)cadena);k++){
+	for (int k=0;k<tamanio;k++){
 
 		int indice_clave=(self->posicion_cifrado)%(self->longitud_clave);
 		cadena_procesada[k]=cadena[k]+clave[indice_clave];
