@@ -1,12 +1,11 @@
 #include "common_cesar_encryption.h"
 
-void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int clave_numerica,int tamanio){
-
+void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,\
+		int clave_numerica,int tamanio){
 	int i=0;
 
 
 	while((i<tamanio)){
-
 		char caracter;
 		caracter=*(cadena+i);
 		caracter=caracter+clave_numerica;
@@ -14,15 +13,13 @@ void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int cla
 		cadena_procesada[i]=caracter;
 		i++;
 	}
-
 }
 
-void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,int clave_numerica,int tamanio){
+void descifrado_cesar(unsigned char* cadena_procesada,\
+		unsigned char* cadena_normalizada,int clave_numerica,int tamanio){
 	int i=0;
 
-
 	while((i<tamanio)){
-
 		char valor_decimal;
 		valor_decimal=*(cadena_procesada+i);
 		valor_decimal=valor_decimal-clave_numerica;

@@ -1,15 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
 #include "client_procesar_datos.h"
-
 #include "common_socket.h"
 
 
-
 int main(int argc, char const *argv[]) {
-
     archivo_t archivo;
     socket_t socket;
 
@@ -17,34 +13,31 @@ int main(int argc, char const *argv[]) {
 
     socket_connect(&socket, argv[1], argv[2]);
 
-    if(argc<6){
+    if (argc<6){
     	abrir_archivo(&archivo,NULL);
-
+    }else{
+    	abrir_archivo(&archivo, argv[6]); //ACA INICIALIZO MI TDA READER
     }
-
-    else abrir_archivo(&archivo, argv[6]); //ACA INICIALIZO MI TDA READER
 
     int tamanio_clave= strlen(argv[4])-6;
     char subbuff[tamanio_clave+1];
-    memcpy( subbuff, &argv[4][6], tamanio_clave );
+    memcpy(subbuff,&argv[4][6],tamanio_clave);
     subbuff[tamanio_clave] = '\0';
 
-    if(atoi(subbuff)!=0){
+    if (atoi(subbuff)!=0){
+
     	int clave_numerica=atoi(subbuff);
     	enviar_datos_cesar(&archivo,clave_numerica,&socket);
     	shutdown(socket.fd,SHUT_RDWR);
     }
-
-    if(strcmp(argv[3],"--method=vigenere")==0){
+    if (strcmp(argv[3],"--method=vigenere")==0){
     	enviar_datos_vigenere(&archivo,subbuff,&socket);
     	shutdown(socket.fd,SHUT_RDWR);
     }
-
-    if(strcmp(argv[3],"--method=rc4")==0){
+    if (strcmp(argv[3],"--method=rc4")==0){
     	enviar_datos_rc4(&archivo,subbuff,&socket);
     	shutdown(socket.fd,SHUT_RDWR);
     }
-
     cerrar_archivo(&archivo); //ACA CIERRO MI TDA READER
     socket_uninit(&socket);
 	return 0;

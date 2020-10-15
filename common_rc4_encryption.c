@@ -16,7 +16,6 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
 
     for (i = 0; i < 256; i++){
     	S[i] = i;
-
     }
 
     for (i = j = 0; i < 256; i++) {
@@ -24,19 +23,19 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
         swap(S, i, j);
     }
 
-    j = 0;
 }
 
-void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado\
-		,rc4_t* self,int* i,int* j,int tamanio) {
+void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* \
+		buffer_procesado,rc4_t* self,int* i,int* j,int tamanio) {
 
 	size_t k=0;
 
 	while(k<tamanio){
-
 		int indice;
 
-		if((buffer[k]=='\0')||(buffer[k]=='\n')) break;
+		if((buffer[k]=='\0')||(buffer[k]=='\n')){
+			break;
+		}
 
     	self->posicion_cifrado++;
         *i = (*i + 1) & 255;
@@ -45,7 +44,6 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
         indice=(S[*i] + S[*j]) & 255;
         buffer_procesado[k]=buffer[k]^S[indice];
         k++;
-
     }
 }
 
@@ -54,9 +52,7 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
 
 	int k=0;
 
-
 	while(k<tamanio){
-
 		int indice;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
@@ -65,9 +61,5 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
         buffer_normalizado[k]=buffer_procesado[k]^S[indice];
         k++;
         self->posicion_cifrado++;
-
     }
 }
-
-
-

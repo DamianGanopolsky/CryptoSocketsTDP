@@ -4,7 +4,6 @@
 
 void socket_init(socket_t *self){
 	self->fd=-1;
-
 }
 
 void socket_uninit(socket_t *self){
@@ -88,7 +87,6 @@ void socket_bind_and_listen(socket_t *self,\
 
 
 void socket_accept(socket_t *listener, socket_t *peer){
-
     char addressBuf[INET_ADDRSTRLEN];
     struct sockaddr_in address;
     socklen_t addressLength = (socklen_t) sizeof(address);
@@ -99,7 +97,6 @@ void socket_accept(socket_t *listener, socket_t *peer){
     inet_ntop(AF_INET, &(address.sin_addr), addressBuf, INET_ADDRSTRLEN);
     //printf("Se conectó un usuario: %s\n", addressBuf);
     peer->fd = newSocket;
-
 }
 
 ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
@@ -108,13 +105,12 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 	ssize_t longitud_restante=length;
 	unsigned char* puntero_a_caracter_actual=buffer;
 
-    while(longitud_restante>0){
-
+    while (longitud_restante>0){
     	ssize_t caracteres_enviados;
     	caracteres_enviados=send(self->fd,puntero_a_caracter_actual\
     			,longitud_restante,MSG_NOSIGNAL);
 
-        if(caracteres_enviados==-1){
+        if (caracteres_enviados==-1){
        // 	if(errno==EAGAIN) printf("error es eagain \n");
 
         //	else if(errno==EBADF) printf("error es EBADF \n");
@@ -134,32 +130,27 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 
 	ssize_t longitud_restante=length;
-	ssize_t caracteres_recibidos;
 
-	while(longitud_restante>0){
 
+	while (longitud_restante>0){
+		ssize_t caracteres_recibidos;
 		unsigned char* puntero_a_caracter_actual=buffer;
 		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual\
 				,longitud_restante,MSG_NOSIGNAL);
 
-		if(caracteres_recibidos==-1){
-		//	printf("Error al recibir \n");
-
+		if (caracteres_recibidos==-1){
 			continue;
-		}
 
-		else if(caracteres_recibidos==0){
+		}else if (caracteres_recibidos==0){
 			//memcpy(buffer_final,buffer,64-longitud_restante);
 			return BUFFER_SIZE-longitud_restante;
-		}
 
-		else{
-	        puntero_a_caracter_actual=caracteres_recibidos+puntero_a_caracter_actual;
+		}else{
+	        puntero_a_caracter_actual=caracteres_recibidos\
+	        		+puntero_a_caracter_actual;
 	        longitud_restante=longitud_restante-caracteres_recibidos;
 		}
 	}
 	//memcpy(buffer_final,buffer,64);
 	return BUFFER_SIZE-longitud_restante;
-
 }
-

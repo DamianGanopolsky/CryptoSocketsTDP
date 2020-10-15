@@ -5,7 +5,6 @@
 #include "server_server.h"
 
 int main(int argc, char const *argv[]){
-
 	socket_t socket;
 	socket_t socket_peer;
 

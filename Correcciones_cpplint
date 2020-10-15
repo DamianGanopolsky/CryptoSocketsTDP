@@ -14,7 +14,6 @@
 /task/student//source_unsafe/common_socket.c:113:  Missing space before ( in if(  [whitespace/parens] [5]
 /task/student//source_unsafe/common_socket.c:131:  Redundant blank line at the start of a code block should be deleted.  [whitespace/blank_line] [2]
 /task/student//source_unsafe/common_socket.c:137:  Redundant blank line at the start of a code block should be deleted.  [whitespace/blank_line] [2]
-/task/student//source_unsafe/common_socket.c:138:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
 /task/student//source_unsafe/common_socket.c:146:  An else should appear on the same line as the preceding }  [whitespace/newline] [4]
 /task/student//source_unsafe/common_socket.c:146:  If an else has a brace on one side, it should have it on both  [readability/braces] [5]
 /task/student//source_unsafe/common_socket.c:146:  Missing space before ( in if(  [whitespace/parens] [5]
