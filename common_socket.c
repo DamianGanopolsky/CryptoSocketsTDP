@@ -51,7 +51,8 @@ void socket_connect(socket_t *self, const char *host, const char *service){
 }
 
 
-void socket_bind_and_listen(socket_t *self,const char *host,const char *service){
+void socket_bind_and_listen(socket_t *self,\
+		const char *host,const char *service){
     int fd = -1;
     struct addrinfo hints;
 	struct addrinfo *result, *rp;
@@ -92,7 +93,8 @@ void socket_accept(socket_t *listener, socket_t *peer){
     struct sockaddr_in address;
     socklen_t addressLength = (socklen_t) sizeof(address);
 
-    int newSocket = accept(listener->fd, (struct sockaddr *)&address,&addressLength);
+    int newSocket = accept(listener->fd, \
+    		(struct sockaddr *)&address,&addressLength);
 
     inet_ntop(AF_INET, &(address.sin_addr), addressBuf, INET_ADDRSTRLEN);
     //printf("Se conectó un usuario: %s\n", addressBuf);
@@ -102,13 +104,15 @@ void socket_accept(socket_t *listener, socket_t *peer){
 
 ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 
-	ssize_t caracteres_enviados;
+
 	ssize_t longitud_restante=length;
 	unsigned char* puntero_a_caracter_actual=buffer;
 
     while(longitud_restante>0){
 
-    	caracteres_enviados=send(self->fd,puntero_a_caracter_actual,longitud_restante,MSG_NOSIGNAL);
+    	ssize_t caracteres_enviados;
+    	caracteres_enviados=send(self->fd,puntero_a_caracter_actual\
+    			,longitud_restante,MSG_NOSIGNAL);
 
         if(caracteres_enviados==-1){
        // 	if(errno==EAGAIN) printf("error es eagain \n");
@@ -130,12 +134,13 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 
 	ssize_t longitud_restante=length;
-	unsigned char* puntero_a_caracter_actual=buffer;
 	ssize_t caracteres_recibidos;
 
 	while(longitud_restante>0){
 
-		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual,longitud_restante,MSG_NOSIGNAL);
+		unsigned char* puntero_a_caracter_actual=buffer;
+		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual\
+				,longitud_restante,MSG_NOSIGNAL);
 
 		if(caracteres_recibidos==-1){
 		//	printf("Error al recibir \n");

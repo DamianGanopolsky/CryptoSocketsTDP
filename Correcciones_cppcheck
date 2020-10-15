@@ -18,9 +18,13 @@ Checking /task/student/source_unsafe/common_cesar_encryption.c ...
 /task/student/source_unsafe/common_cesar_encryption.c:6:7: style: The scope of the variable 'caracter' can be reduced. [variableScope]
  char caracter;
       ^
+CORREGIDO
+
 /task/student/source_unsafe/common_cesar_encryption.c:21:7: style: The scope of the variable 'valor_decimal' can be reduced. [variableScope]
  char valor_decimal;
       ^
+CORREGIDO
+
 4/17 files checked 28% done
 Checking /task/student/source_unsafe/common_cesar_encryption.h ...
 5/17 files checked 29% done
@@ -32,12 +36,19 @@ Checking /task/student/source_unsafe/common_rc4_encryption.c ...
 /task/student/source_unsafe/common_rc4_encryption.c:32:6: style: The scope of the variable 'indice' can be reduced. [variableScope]
  int indice;
      ^
+CORREGIDO
+
 /task/student/source_unsafe/common_rc4_encryption.c:52:6: style: The scope of the variable 'indice' can be reduced. [variableScope]
  int indice;
      ^
+CORREGIDO 
+
+
 /task/student/source_unsafe/common_rc4_encryption.c:26:7: style: Variable 'i' is assigned a value that is never used. [unreadVariable]
     i = j = 0;
       ^
+CORREGIDO
+
 8/17 files checked 39% done
 Checking /task/student/source_unsafe/common_rc4_encryption.h ...
 9/17 files checked 42% done
@@ -45,5 +56,9 @@ Checking /task/student/source_unsafe/common_socket.c ...
 /task/student/source_unsafe/common_socket.c:105:10: style: The scope of the variable 'caracteres_enviados' can be reduced. [variableScope]
  ssize_t caracteres_enviados;
          ^
+CORREGIDO
+
 /task/student/source_unsafe/common_socket.c:134:10: style: The scope of the variable 'caracteres_recibidos' can be reduced. [variableScope]
  ssize_t caracteres_recibidos;
+
+CORREGIDO

@@ -19,10 +19,11 @@ void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,int cla
 
 void descifrado_cesar(unsigned char* cadena_procesada,unsigned char* cadena_normalizada,int clave_numerica,int tamanio){
 	int i=0;
-	char valor_decimal;
+
 
 	while((i<tamanio)){
 
+		char valor_decimal;
 		valor_decimal=*(cadena_procesada+i);
 		valor_decimal=valor_decimal-clave_numerica;
 		valor_decimal=valor_decimal%256;

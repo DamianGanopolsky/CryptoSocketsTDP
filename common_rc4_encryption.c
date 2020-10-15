@@ -8,7 +8,8 @@ void swap(unsigned char *s, unsigned int i, unsigned int j) {
     s[j] = temp;
 }
 
-void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S,rc4_t* self,int longitud_mensaje) {
+void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
+		,rc4_t* self,int longitud_mensaje) {
 	int i,j;
 	self->posicion_cifrado=0;
 	self->longitud_mensaje=longitud_mensaje;
@@ -23,15 +24,17 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S,rc4_t* s
         swap(S, i, j);
     }
 
-    i = j = 0;
+    j = 0;
 }
 
-void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado,rc4_t* self,int* i,int* j,int tamanio) {
+void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_procesado\
+		,rc4_t* self,int* i,int* j,int tamanio) {
 
 	size_t k=0;
-	int indice;
 
 	while(k<tamanio){
+
+		int indice;
 
 		if((buffer[k]=='\0')||(buffer[k]=='\n')) break;
 
@@ -46,13 +49,15 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
     }
 }
 
-void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j,int tamanio) {
+void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
+		unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j,int tamanio) {
 
 	int k=0;
-	int indice;
+
 
 	while(k<tamanio){
 
+		int indice;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
         swap(S, *i, *j);
