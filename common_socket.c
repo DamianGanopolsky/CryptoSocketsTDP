@@ -4,11 +4,11 @@
 
 void socket_init(socket_t *self){
 	self->fd=-1;
-	close(self->fd);
+
 }
 
 void socket_uninit(socket_t *self){
-	self->fd=-1;
+	close(self->fd);
 }
 
 void socket_connect(socket_t *self, const char *host, const char *service){
@@ -42,6 +42,7 @@ void socket_connect(socket_t *self, const char *host, const char *service){
         close(sfd);
     }
     self->fd=sfd;
+    freeaddrinfo(result);
 
     if (rp == NULL) {               /* No address succeeded */
     	//fprintf(stderr, "Could not connect\n");

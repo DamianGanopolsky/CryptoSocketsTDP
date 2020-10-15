@@ -23,6 +23,7 @@ int main(int argc, char const *argv[]){
 	recibir_mensajes(&socket_peer,argv[2],argv[3]);
 
 	socket_uninit(&socket);
+	socket_uninit(&socket_peer);
 
 	return 0;
 }
