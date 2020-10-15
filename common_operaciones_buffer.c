@@ -7,13 +7,3 @@ void limpiar_buffers(unsigned char* buffer1,size_t size1,unsigned char* buffer2,
 	if(buffer2!=NULL) memset(buffer2,0,size2);
 
 }
-/*
-unsigned char* crear_buffer_vacio(size_t tamanio_buffer){
-
-	unsigned char buffer[tamanio_buffer];
-	memset(buffer,0,sizeof(buffer));
-	return buffer;
-
-}
-*/
-

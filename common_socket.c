@@ -14,12 +14,7 @@ void socket_uninit(socket_t *self){
 void socket_connect(socket_t *self, const char *host, const char *service){
     struct addrinfo hints;
     struct addrinfo *result, *rp;
-    //int sfd, s, j;
     int s,sfd;
-   /// size_t len;
-   // ssize_t nread;
-   // char buf[BUFFER_SIZE];
-
     /* Obtain address(es) matching host/port */
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -30,7 +25,7 @@ void socket_connect(socket_t *self, const char *host, const char *service){
 
     s = getaddrinfo(host, service, &hints, &result);
     if (s != 0) {
-    	fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+    	//fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
     	return;
     	//exit(EXIT_FAILURE);
     }
@@ -49,7 +44,7 @@ void socket_connect(socket_t *self, const char *host, const char *service){
     self->fd=sfd;
 
     if (rp == NULL) {               /* No address succeeded */
-    	fprintf(stderr, "Could not connect\n");
+    	//fprintf(stderr, "Could not connect\n");
     	return;
                }
 }
@@ -99,8 +94,7 @@ void socket_accept(socket_t *listener, socket_t *peer){
     int newSocket = accept(listener->fd, (struct sockaddr *)&address,&addressLength);
 
     inet_ntop(AF_INET, &(address.sin_addr), addressBuf, INET_ADDRSTRLEN);
-    printf("Se conectó un usuario: %s\n", addressBuf);
-    // Está rompiendo su encapsulamiento, coxhino!
+    //printf("Se conectó un usuario: %s\n", addressBuf);
     peer->fd = newSocket;
 
 }
@@ -116,13 +110,13 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
     	caracteres_enviados=send(self->fd,puntero_a_caracter_actual,longitud_restante,MSG_NOSIGNAL);
 
         if(caracteres_enviados==-1){
-        	if(errno==EAGAIN) printf("error es eagain \n");
+       // 	if(errno==EAGAIN) printf("error es eagain \n");
 
-        	else if(errno==EBADF) printf("error es EBADF \n");
+        //	else if(errno==EBADF) printf("error es EBADF \n");
 
-        	else{
-        		printf("otro error \n");
-        	}
+        	//else{
+        		//printf("otro error \n");
+        	//}
         	continue;
         }
         puntero_a_caracter_actual=caracteres_enviados+puntero_a_caracter_actual;
@@ -143,7 +137,7 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual,longitud_restante,MSG_NOSIGNAL);
 
 		if(caracteres_recibidos==-1){
-			printf("Error al recibir \n");
+		//	printf("Error al recibir \n");
 
 			continue;
 		}

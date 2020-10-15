@@ -1,5 +1,0 @@
-run: build
-    ./ejecutable
-
-build: main.c file_reader.c
-    gcc -std=99 main.c file_reader.c -o ejecutable

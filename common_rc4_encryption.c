@@ -36,7 +36,6 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* buffer_pro
 		if((buffer[k]=='\0')||(buffer[k]=='\n')) break;
 
     	self->posicion_cifrado++;
-    	//if(self->posicion_cifrado==self->longitud_mensaje) break;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
         swap(S, *i, *j);
@@ -52,10 +51,7 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,unsigned cha
 	int k=0;
 	int indice;
 
-  //  while(k< strlen((char*)buffer_procesado)){
 	while(k<tamanio){
-
-		//if(buffer_procesado[k]=='\0') break;
 
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
