@@ -5,7 +5,6 @@
 int abrir_archivo(archivo_t* self, const char* file_name){
 	if(file_name!=NULL){
 		self->fp=fopen(file_name,"rb");
-
 	}else{
 		self->fp= stdin;
 	}

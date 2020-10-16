@@ -27,7 +27,6 @@ int main(int argc, char const *argv[]) {
     subbuff[tamanio_clave] = '\0';
 
     if (atoi(subbuff)!=0){
-
     	int clave_numerica=atoi(subbuff);
     	enviar_datos_cesar(&archivo,clave_numerica,&socket);
     	shutdown(socket.fd,SHUT_RDWR);
