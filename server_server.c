@@ -19,13 +19,15 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			descifrado_cesar(ultimo_mensaje,\
 					ultimo_mensaje_desencriptado,clave,recibidos);
 			ultimo_mensaje_desencriptado[recibidos]=0;
-			fprintf(stdout, "%s",ultimo_mensaje_desencriptado);
+			//fprintf(stdout, "%s",ultimo_mensaje_desencriptado);
+			printf("%s",ultimo_mensaje_desencriptado);
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
 		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		fprintf(stdout, "%s",mensaje_desencriptado);
+		//fprintf(stdout, "%s",mensaje_desencriptado);
+		printf("%s",mensaje_desencriptado);
 	}
 }
 
@@ -45,14 +47,16 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			descifrado_vigenere(ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,clave,&vigenere,recibidos);
 			ultimo_mensaje_desencriptado[recibidos]=0;
-			fprintf(stdout,"%s",ultimo_mensaje_desencriptado);
+			//fprintf(stdout,"%s",ultimo_mensaje_desencriptado);
+			printf("%s",ultimo_mensaje_desencriptado);
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
-		fprintf(stdout,"%s",mensaje_desencriptado);
+	//	fprintf(stdout,"%s",mensaje_desencriptado);
+		printf("%s",mensaje_desencriptado);
 	}
 }
 
@@ -76,13 +80,15 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 			rc4_descifrar(S,ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,&rc4,&i,&j,recibidos);
 			ultimo_mensaje_desencriptado[recibidos]=0;
-			fprintf(stdout,"%s",ultimo_mensaje_desencriptado);
+			printf("%s",ultimo_mensaje_desencriptado);
+			//fprintf(stdout,"%s",ultimo_mensaje_desencriptado);
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
 		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
-		fprintf(stdout,"%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
+		//fprintf(stdout,"%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
+		printf("%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
 	}
 }
 
