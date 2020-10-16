@@ -25,7 +25,7 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
 		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		fprintf(stdout, "%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
+		fprintf(stdout, "%s",mensaje_desencriptado);
 	}
 }
 
@@ -52,7 +52,7 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
-		fprintf(stdout,"%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
+		fprintf(stdout,"%s",mensaje_desencriptado);
 	}
 }
 
