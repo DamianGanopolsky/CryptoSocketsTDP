@@ -1,5 +1,5 @@
 #include "common_socket.h"
-#define BUFFER_SIZE 1
+#define BUFFER_SIZE 64
 #define LONGITUD_COLA 10
 
 void socket_init(socket_t *self){
