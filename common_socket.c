@@ -1,5 +1,5 @@
 #include "common_socket.h"
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 1
 #define LONGITUD_COLA 10
 
 void socket_init(socket_t *self){
@@ -33,7 +33,7 @@ void socket_connect(socket_t *self, const char *host, const char *service){
         	continue;
 
         if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
-        	break;                  /* Success */
+        	break;
 
         close(sfd);
     }

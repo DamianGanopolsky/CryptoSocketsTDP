@@ -1,5 +1,5 @@
 #include "client_procesar_datos.h"
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 1
 
 
 int abrir_archivo(archivo_t* self, const char* file_name){
