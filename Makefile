@@ -15,7 +15,7 @@ extension = c
 # NOTA: No poner cabeceras (.h).
 fuentes_client = client_procesar_datos.c client_main.c
 fuentes_server = server_main.c server_server.c
-fuentes_common = common_cesar_encryption.c common_vigenere_encryption.c common_rc4_encryption.c common_operaciones_buffer.c common_socket.c
+fuentes_common = common_cesar_encryption.c common_vigenere_encryption.c common_rc4_encryption.c common_operaciones_buffer.c common_socket.c common_wrap_socket.c
 
 # Si usa funciones de math.h, descomentar (quitar el '#' a) la siguiente lÃ­nea.
 math = si
@@ -30,7 +30,7 @@ threads = si
 #gtkmm = si
 
 # Si se quiere wrappear las funciones send/recv (Ãºtil para testear sockets).
-#wrapsocks = si
+wrapsocks = si
 
 # Descomentar si se quiere ver como se invoca al compilador
 #verbose = si

@@ -1,5 +1,4 @@
 #include "common_socket.h"
-#define BUFFER_SIZE 64
 #define LONGITUD_COLA 10
 
 void socket_init(socket_t *self){
@@ -124,24 +123,23 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 
 ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 	ssize_t longitud_restante=length;
+	unsigned char* puntero_a_caracter_actual=buffer;
 
 	while (longitud_restante>0){
 		ssize_t caracteres_recibidos;
-		unsigned char* puntero_a_caracter_actual=buffer;
+
 		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual\
-				,longitud_restante,MSG_NOSIGNAL);
+				,longitud_restante,0);
 
 		if (caracteres_recibidos==-1){
 			continue;
 		}else if (caracteres_recibidos==0){
-			//memcpy(buffer_final,buffer,64-longitud_restante);
-			return BUFFER_SIZE-longitud_restante;
+			return length-longitud_restante;//memcpy(buffer_final,buffer,64-longitud_restante);
 		}else{
 	        puntero_a_caracter_actual=caracteres_recibidos\
 	        		+puntero_a_caracter_actual;
 	        longitud_restante=longitud_restante-caracteres_recibidos;
 		}
 	}
-	//memcpy(buffer_final,buffer,64);
-	return BUFFER_SIZE-longitud_restante;
+	return length-longitud_restante;
 }
