@@ -24,9 +24,9 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
-		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		unsigned char mensaje_desencriptado[BUFFER_ESPERADO+1];
 		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		//fprintf(stdout, "%s",mensaje_desencriptado);
+		mensaje_desencriptado[BUFFER_ESPERADO]=0;
 		printf("%s",mensaje_desencriptado);
 	}
 }
@@ -52,9 +52,10 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
-		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		unsigned char mensaje_desencriptado[BUFFER_ESPERADO+1];
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
+		mensaje_desencriptado[BUFFER_ESPERADO]=0;
 	//	fprintf(stdout,"%s",mensaje_desencriptado);
 		printf("%s",mensaje_desencriptado);
 	}
@@ -85,10 +86,11 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
-		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		unsigned char mensaje_desencriptado[BUFFER_ESPERADO+1];
 		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
 		//fprintf(stdout,"%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
-		printf("%.*s",BUFFER_ESPERADO,mensaje_desencriptado);
+		mensaje_desencriptado[BUFFER_ESPERADO]=0;
+		printf("%s",mensaje_desencriptado);
 	}
 }
 
