@@ -22,7 +22,6 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
         j = (j + key[i % key_length] + S[i]) & 255;
         swap(S, i, j);
     }
-
 }
 
 void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* \
@@ -47,7 +46,6 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* \
 
 void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
 		unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j,int tamanio) {
-
 	int k=0;
 
 	while (k<tamanio){

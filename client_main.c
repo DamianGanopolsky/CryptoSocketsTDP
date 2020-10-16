@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "client_procesar_datos.h"
 #include "common_socket.h"
+#define LARGO_VECTOR_CLAVE 300
 
 
 int main(int argc, char const *argv[]) {
@@ -20,7 +21,8 @@ int main(int argc, char const *argv[]) {
     }
 
     int tamanio_clave= strlen(argv[4])-6;
-    char subbuff[tamanio_clave+1];
+    char subbuff[LARGO_VECTOR_CLAVE];
+    memset(subbuff,0,sizeof(subbuff));
     memcpy(subbuff,&argv[4][6],tamanio_clave);
     subbuff[tamanio_clave] = '\0';
 

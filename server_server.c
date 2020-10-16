@@ -3,6 +3,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 #define BUFFER_ESPERADO 64
+#define LARGO_VECTOR_CLAVE 300
 
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
@@ -89,7 +90,8 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 void recibir_mensajes(socket_t* socket_peer,\
 		const char* metodo,const char* clave){
     int tamanio_clave= strlen(clave)-6;
-    char subbuff[tamanio_clave+1];
+    char subbuff[LARGO_VECTOR_CLAVE];
+    memset(subbuff,0,sizeof(subbuff));
     memcpy(subbuff,&clave[6],tamanio_clave);
     subbuff[tamanio_clave] = '\0';
 
