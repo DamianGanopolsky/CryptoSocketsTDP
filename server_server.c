@@ -16,14 +16,9 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			unsigned char* ultimo_mensaje=malloc(sizeof(char)*(recibidos));
 			unsigned char* ultimo_mensaje_desencriptado\
 			=malloc(sizeof(char)*(recibidos));
-		//	unsigned char ultimo_mensaje[recibidos+1];
-			//unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			memcpy(ultimo_mensaje,mensaje,recibidos);
 			descifrado_cesar(ultimo_mensaje,\
 					ultimo_mensaje_desencriptado,clave,recibidos);
-			//ultimo_mensaje_desencriptado[recibidos]=0;
-			//fprintf(stdout, "%s",ultimo_mensaje_desencriptado);
-			//printf("%s",ultimo_mensaje_desencriptado);
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
@@ -31,9 +26,8 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		//mensaje_desencriptado[BUFFER_ESPERADO]=0;
-		//printf("%s",mensaje_desencriptado);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
@@ -51,25 +45,19 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			unsigned char* ultimo_mensaje=malloc(sizeof(char)*(recibidos));
 			unsigned char* ultimo_mensaje_desencriptado=\
 					malloc(sizeof(char)*(recibidos));
-			//unsigned char ultimo_mensaje[recibidos+1];
-			//unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			memcpy(ultimo_mensaje,mensaje,recibidos);
 			descifrado_vigenere(ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,clave,&vigenere,recibidos);
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
-			//ultimo_mensaje_desencriptado[recibidos]=0;
-			//printf("%s",ultimo_mensaje_desencriptado);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
-		//mensaje_desencriptado[BUFFER_ESPERADO]=0;
-	//	fprintf(stdout,"%s",mensaje_desencriptado);
-	//	printf("%s",mensaje_desencriptado);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
@@ -89,25 +77,19 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 
 		if (recibidos<BUFFER_ESPERADO){
 			unsigned char* ultimo_mensaje=malloc(sizeof(char)*(recibidos));
-			//unsigned char ultimo_mensaje[recibidos+1];
-			//unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			unsigned char* ultimo_mensaje_desencriptado=malloc(sizeof(char)*(recibidos));
 			memcpy(ultimo_mensaje,mensaje,recibidos);
 			rc4_descifrar(S,ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,&rc4,&i,&j,recibidos);
-			//ultimo_mensaje_desencriptado[recibidos]=0;
-			//printf("%s",ultimo_mensaje_desencriptado);
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
-			//fprintf(stdout,"%s",ultimo_mensaje_desencriptado);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
 			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
-		//mensaje_desencriptado[BUFFER_ESPERADO]=0;
-		//printf("%s",mensaje_desencriptado);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
