@@ -134,7 +134,7 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 		if (caracteres_recibidos==-1){
 			continue;
 		}else if (caracteres_recibidos==0){
-			return length-longitud_restante;//memcpy(buffer_final,buffer,64-longitud_restante);
+			return length-longitud_restante;
 		}else{
 	        puntero_a_caracter_actual=caracteres_recibidos\
 	        		+puntero_a_caracter_actual;
