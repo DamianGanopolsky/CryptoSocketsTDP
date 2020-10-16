@@ -14,19 +14,16 @@ void socket_connect(socket_t *self, const char *host, const char *service){
     struct addrinfo hints;
     struct addrinfo *result, *rp;
     int s,sfd;
-    /* Obtain address(es) matching host/port */
 
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_family = AF_UNSPEC;    /* Allow IPv4 or IPv6 */
-    hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = 0;
     hints.ai_protocol = 0;
 
     s = getaddrinfo(host, service, &hints, &result);
     if (s != 0) {
-    	//fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
-    	return;
-    	//exit(EXIT_FAILURE);
+    	return;//fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
     }
 
     for (rp = result; rp != NULL; rp = rp->ai_next) {
@@ -43,10 +40,9 @@ void socket_connect(socket_t *self, const char *host, const char *service){
     self->fd=sfd;
     freeaddrinfo(result);
 
-    if (rp == NULL) {               /* No address succeeded */
-    	//fprintf(stderr, "Could not connect\n");
-    	return;
-               }
+    if (rp == NULL) {
+    	return;//fprintf(stderr, "Could not connect\n");
+    }
 }
 
 
@@ -55,7 +51,6 @@ void socket_bind_and_listen(socket_t *self,\
     int fd = -1;
     struct addrinfo hints;
 	struct addrinfo *result, *rp;
-	//int s;
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
@@ -100,8 +95,6 @@ void socket_accept(socket_t *listener, socket_t *peer){
 }
 
 ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
-
-
 	ssize_t longitud_restante=length;
 	unsigned char* puntero_a_caracter_actual=buffer;
 
@@ -111,6 +104,8 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
     			,longitud_restante,MSG_NOSIGNAL);
 
         if (caracteres_enviados==-1){
+        	continue;
+        }
        // 	if(errno==EAGAIN) printf("error es eagain \n");
 
         //	else if(errno==EBADF) printf("error es EBADF \n");
@@ -118,8 +113,8 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
         	//else{
         		//printf("otro error \n");
         	//}
-        	continue;
-        }
+
+
         puntero_a_caracter_actual=caracteres_enviados+puntero_a_caracter_actual;
         longitud_restante=longitud_restante-caracteres_enviados;
     }
@@ -128,9 +123,7 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
 
 
 ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
-
 	ssize_t longitud_restante=length;
-
 
 	while (longitud_restante>0){
 		ssize_t caracteres_recibidos;

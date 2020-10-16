@@ -8,10 +8,10 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
 
-	while(recibidos==BUFFER_ESPERADO){
+	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 
-		if(recibidos<BUFFER_ESPERADO){
+		if (recibidos<BUFFER_ESPERADO){
 			unsigned char ultimo_mensaje[recibidos+1];
 			unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			memcpy(ultimo_mensaje,mensaje,recibidos);
@@ -34,10 +34,10 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 	vigenere_t vigenere;
 	inicializar_vigenere(&vigenere,strlen((char*)clave));
 
-	while(recibidos==BUFFER_ESPERADO){
+	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 
-		if(recibidos<BUFFER_ESPERADO){
+		if (recibidos<BUFFER_ESPERADO){
 			unsigned char ultimo_mensaje[recibidos+1];
 			unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			memcpy(ultimo_mensaje,mensaje,recibidos);
@@ -65,10 +65,10 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	inicializar_rc4(clave,strlen((char*)clave),S,&rc4,0);
 	int i=0,j=0;
 
-	while(recibidos==BUFFER_ESPERADO){
+	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 
-		if(recibidos<BUFFER_ESPERADO){
+		if (recibidos<BUFFER_ESPERADO){
 			unsigned char ultimo_mensaje[recibidos+1];
 			unsigned char ultimo_mensaje_desencriptado[recibidos+1];
 			memcpy(ultimo_mensaje,mensaje,recibidos);

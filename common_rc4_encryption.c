@@ -27,16 +27,14 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
 
 void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* \
 		buffer_procesado,rc4_t* self,int* i,int* j,int tamanio) {
-
 	size_t k=0;
 
-	while(k<tamanio){
+	while (k<tamanio){
 		int indice;
 
-		if((buffer[k]=='\0')||(buffer[k]=='\n')){
+		if ((buffer[k]=='\0')||(buffer[k]=='\n')){
 			break;
 		}
-
     	self->posicion_cifrado++;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
@@ -52,7 +50,7 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
 
 	int k=0;
 
-	while(k<tamanio){
+	while (k<tamanio){
 		int indice;
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
