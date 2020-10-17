@@ -35,8 +35,8 @@ int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
-		if (longitud_mensaje-bytes_enviados-1<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados-1;
+		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
+			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
 		    memset(buffer_procesado,0,tamanio);
 		    cifrado_cesar(buffer,buffer_procesado,clave,tamanio);
@@ -66,8 +66,8 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
-		if (longitud_mensaje-bytes_enviados-1<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados-1;
+		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
+			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
 		    memset(buffer_procesado,0,tamanio);
 			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,tamanio);
@@ -104,10 +104,10 @@ int enviar_datos_rc4(archivo_t* self,\
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
 
-		if (longitud_mensaje-bytes_enviados-1<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados-1;
+		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
+			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
-		    //memset(buffer_procesado,0,tamanio);
+		    memset(buffer_procesado,0,tamanio);
 		    rc4_cifrar(S_cliente,buffer,buffer_procesado,\
 		    				&rc4_cliente,&i_cliente,&j_cliente,tamanio);
 			socket_send(socket,buffer_procesado,tamanio);
