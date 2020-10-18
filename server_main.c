@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "common_socket.h"
-#include "common_cesar_encryption.h"
 #include "server_server.h"
 
 int main(int argc, char const *argv[]){
