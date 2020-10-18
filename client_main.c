@@ -1,6 +1,21 @@
 #include "client_procesar_datos.h"
 #include "common_socket.h"
 #define LARGO_VECTOR_CLAVE 300
+#define EXITO 0
+#define ERROR -1
+
+int slice(const char* argumento,char* clave){
+    int tamanio_clave= strlen(argumento)-6;
+    //Establezco un limite en el tamaño de la
+    //clave para evitar un buffer overflow
+    if (tamanio_clave>LARGO_VECTOR_CLAVE){
+    	fprintf(stderr, "Tamaño de clave demasiado grande \n");
+    	return ERROR;
+    }
+    memcpy(clave,&argumento[6],tamanio_clave);
+    clave[tamanio_clave] = '\0';
+    return EXITO;
+}
 
 
 int main(int argc, char const *argv[]) {
@@ -17,21 +32,20 @@ int main(int argc, char const *argv[]) {
     	abrir_archivo(&archivo, argv[6]); //ACA INICIALIZO MI TDA READER
     }
 
-    int tamanio_clave= strlen(argv[4])-6;
-    char subbuff[LARGO_VECTOR_CLAVE];
-    memset(subbuff,0,sizeof(subbuff));
-    memcpy(subbuff,&argv[4][6],tamanio_clave);
-    subbuff[tamanio_clave] = '\0';
+    char clave[LARGO_VECTOR_CLAVE];
+    if(slice(argv[4],clave)==ERROR){
+    	return ERROR;
+    }
 
-    if (atoi(subbuff)!=0){
-    	int clave_numerica=atoi(subbuff);
+    if (strcmp(argv[3],"--method=cesar")==0){
+    	int clave_numerica=atoi(clave);
     	enviar_datos_cesar(&archivo,clave_numerica,&socket);
     }
     if (strcmp(argv[3],"--method=vigenere")==0){
-    	enviar_datos_vigenere(&archivo,subbuff,&socket);
+    	enviar_datos_vigenere(&archivo,clave,&socket);
     }
     if (strcmp(argv[3],"--method=rc4")==0){
-    	enviar_datos_rc4(&archivo,subbuff,&socket);
+    	enviar_datos_rc4(&archivo,clave,&socket);
     }
     cerrar_archivo(&archivo); //ACA CIERRO MI TDA READER
     socket_uninit(&socket);

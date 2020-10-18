@@ -96,11 +96,17 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 
 
 void recibir_mensajes(socket_t* socket_peer,\
-		const char* metodo,const char* clave){
-    int tamanio_clave= strlen(clave)-6;
+		const char* metodo,const char* argumento_clave){
+/*
+	char clave[LARGO_VECTOR_CLAVE];
+	if(slice(argumento_clave,clave)==ERROR){
+	    	return ERROR;
+	}
+*/
+	int tamanio_clave= strlen(argumento_clave)-6;
     char subbuff[LARGO_VECTOR_CLAVE];
     memset(subbuff,0,sizeof(subbuff));
-    memcpy(subbuff,&clave[6],tamanio_clave);
+    memcpy(subbuff,&argumento_clave[6],tamanio_clave);
     subbuff[tamanio_clave] = '\0';
 
     if (atoi(subbuff)!=0){
