@@ -56,6 +56,10 @@ void socket_bind_and_listen(socket_t *self,\
     hints.ai_flags = 0;
     getaddrinfo(NULL, service, &hints, &result);
 
+	int val=1;
+
+	setsockopt(self->fd,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(val));
+
     for (rp = result; rp != NULL; rp = rp->ai_next) {
         fd = socket(rp->ai_family,rp->ai_socktype,rp->ai_protocol);
 

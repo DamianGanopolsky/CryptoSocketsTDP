@@ -11,10 +11,6 @@ int main(int argc, char const *argv[]){
 	socket_init(&socket);
 	socket_init(&socket_peer);
 
-	int val=1;
-
-	setsockopt(socket.fd,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(val));
-
 	socket_bind_and_listen(&socket,NULL,argv[1]);
 
 	socket_accept(&socket, &socket_peer);
