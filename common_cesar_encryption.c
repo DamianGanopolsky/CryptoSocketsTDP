@@ -4,7 +4,6 @@ void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,\
 		int clave_numerica,int tamanio){
 	int i=0;
 
-
 	while((i<tamanio)){
 		char caracter;
 		caracter=*(cadena+i);

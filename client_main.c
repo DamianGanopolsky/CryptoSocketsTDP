@@ -26,15 +26,12 @@ int main(int argc, char const *argv[]) {
     if (atoi(subbuff)!=0){
     	int clave_numerica=atoi(subbuff);
     	enviar_datos_cesar(&archivo,clave_numerica,&socket);
-    	shutdown(socket.fd,SHUT_RDWR);
     }
     if (strcmp(argv[3],"--method=vigenere")==0){
     	enviar_datos_vigenere(&archivo,subbuff,&socket);
-    	shutdown(socket.fd,SHUT_RDWR);
     }
     if (strcmp(argv[3],"--method=rc4")==0){
     	enviar_datos_rc4(&archivo,subbuff,&socket);
-    	shutdown(socket.fd,SHUT_RDWR);
     }
     cerrar_archivo(&archivo); //ACA CIERRO MI TDA READER
     socket_uninit(&socket);

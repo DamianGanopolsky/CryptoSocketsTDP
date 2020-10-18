@@ -6,6 +6,7 @@ void socket_init(socket_t *self){
 }
 
 void socket_uninit(socket_t *self){
+	shutdown(self->fd,SHUT_RDWR);
 	close(self->fd);
 }
 
