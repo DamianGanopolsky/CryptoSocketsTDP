@@ -3,7 +3,6 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 #define BUFFER_ESPERADO 64
-#define LARGO_VECTOR_CLAVE 300
 
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
@@ -22,7 +21,6 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
-			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
@@ -51,7 +49,6 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
-			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
@@ -84,7 +81,6 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 			fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
 			free(ultimo_mensaje);
 			free(ultimo_mensaje_desencriptado);
-			shutdown(socket_peer->fd,SHUT_RDWR);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
@@ -92,31 +88,4 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
-}
-
-
-void recibir_mensajes(socket_t* socket_peer,\
-		const char* metodo,const char* argumento_clave){
-/*
-	char clave[LARGO_VECTOR_CLAVE];
-	if(slice(argumento_clave,clave)==ERROR){
-	    	return ERROR;
-	}
-*/
-	int tamanio_clave= strlen(argumento_clave)-6;
-    char subbuff[LARGO_VECTOR_CLAVE];
-    memset(subbuff,0,sizeof(subbuff));
-    memcpy(subbuff,&argumento_clave[6],tamanio_clave);
-    subbuff[tamanio_clave] = '\0';
-
-    if (atoi(subbuff)!=0){
-    	int clave_numerica=atoi(subbuff);
-    	recibir_mensaje_cesar(socket_peer,clave_numerica);
-    }
-    if (strcmp(metodo,"--method=vigenere")==0){
-    	recibir_mensaje_vigenere(socket_peer,subbuff);
-    }
-    if (strcmp(metodo,"--method=rc4")==0){
-        	recibir_mensaje_rc4(socket_peer,subbuff);
-        }
 }

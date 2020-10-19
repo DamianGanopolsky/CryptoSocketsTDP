@@ -110,7 +110,7 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
         if (caracteres_enviados==-1){
         	continue;
         }
-       // 	if(errno==EAGAIN) printf("error es eagain \n");
+        //	if(errno==EAGAIN) printf("error es eagain \n");
 
         //	else if(errno==EBADF) printf("error es EBADF \n");
 
