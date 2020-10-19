@@ -23,7 +23,8 @@ void socket_connect(socket_t *self, const char *host, const char *service){
 
     s = getaddrinfo(host, service, &hints, &result);
     if (s != 0) {
-    	return;//fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+    	fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+    	return;
     }
 
     for (rp = result; rp != NULL; rp = rp->ai_next) {
@@ -41,7 +42,8 @@ void socket_connect(socket_t *self, const char *host, const char *service){
     freeaddrinfo(result);
 
     if (rp == NULL) {
-    	return;//fprintf(stderr, "Could not connect\n");
+    	fprintf(stderr, "No se pudo conectar\n");
+    	return;
     }
 }
 
@@ -57,9 +59,8 @@ void socket_bind_and_listen(socket_t *self,\
     hints.ai_flags = 0;
     getaddrinfo(NULL, service, &hints, &result);
 
-	int val=1;
-
-	setsockopt(self->fd,SOL_SOCKET,SO_REUSEADDR,&val,sizeof(val));
+	int val_opt=1;
+	setsockopt(self->fd,SOL_SOCKET,SO_REUSEADDR,&val_opt,sizeof(val_opt));
 
     for (rp = result; rp != NULL; rp = rp->ai_next) {
         fd = socket(rp->ai_family,rp->ai_socktype,rp->ai_protocol);
@@ -94,7 +95,6 @@ void socket_accept(socket_t *listener, socket_t *peer){
     		(struct sockaddr *)&address,&addressLength);
 
     inet_ntop(AF_INET, &(address.sin_addr), addressBuf, INET_ADDRSTRLEN);
-    //printf("Se conectó un usuario: %s\n", addressBuf);
     peer->fd = newSocket;
 }
 
@@ -106,19 +106,22 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
     	ssize_t caracteres_enviados;
     	caracteres_enviados=send(self->fd,puntero_a_caracter_actual\
     			,longitud_restante,MSG_NOSIGNAL);
-
+    	// Si caracteres enviados=-1, hubo un error en el intento de envio
         if (caracteres_enviados==-1){
-        	continue;
+        	if (errno==EACCES){
+        		fprintf(stderr,"No esta permitida la escritura en el fd de destino\n");
+        		}
+        	else if (errno==EAGAIN){
+        		fprintf(stderr,"El socket no esta ligado a una direccion \n");
+        	}
+        	else if (errno==EBADF){
+        		fprintf(stderr,"sockfd no es un file descriptor valido\n");
+        	}
+        	else{
+        		fprintf(stderr,"Error al enviar \n");
+        	}
+        	break;
         }
-        //	if(errno==EAGAIN) printf("error es eagain \n");
-
-        //	else if(errno==EBADF) printf("error es EBADF \n");
-
-        	//else{
-        		//printf("otro error \n");
-        	//}
-
-
         puntero_a_caracter_actual=caracteres_enviados+puntero_a_caracter_actual;
         longitud_restante=longitud_restante-caracteres_enviados;
     }
@@ -135,10 +138,11 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 
 		caracteres_recibidos=recv(self->fd,puntero_a_caracter_actual\
 				,longitud_restante,0);
-
+		//Si es -1, hubo un error al recibir
 		if (caracteres_recibidos==-1){
-			continue;
-		}else if (caracteres_recibidos==0){
+			fprintf(stderr,"Error al recibir \n");
+			break;
+		}else if (caracteres_recibidos==0){//Si es 0, llegue al 'end of file' paro de recibir
 			return length-longitud_restante;
 		}else{
 	        puntero_a_caracter_actual=caracteres_recibidos\
