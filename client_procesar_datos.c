@@ -31,7 +31,13 @@ int longitud_archivo(archivo_t* self){
     return longitud_mensaje;
 }
 
-
+void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
+		unsigned char* buffer_procesado,size_t buffer_proc_len,int* bytes_enviados){
+	socket_send(socket,buffer_procesado,buffer_proc_len);
+	limpiar_buffers(buffer,buffer_len,\
+			buffer_procesado,buffer_proc_len);
+	*bytes_enviados=*bytes_enviados+BUFFER_SIZE;
+}
 
 
 int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
@@ -55,10 +61,11 @@ int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 		    unsigned char buffer_procesado[BUFFER_SIZE];
 		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 		    cifrado_cesar(buffer,buffer_procesado,clave,BUFFER_SIZE);
-			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
-			limpiar_buffers(buffer,sizeof(buffer),\
-					buffer_procesado,sizeof(buffer_procesado));
-			bytes_enviados=bytes_enviados+BUFFER_SIZE;
+		    enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
+			//socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
+			//limpiar_buffers(buffer,sizeof(buffer),
+				//	buffer_procesado,sizeof(buffer_procesado));
+			//bytes_enviados=bytes_enviados+BUFFER_SIZE;
 		}
 		//bytes_enviados=bytes_enviados+tamanio;
 	}
@@ -88,10 +95,11 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 		    unsigned char buffer_procesado[BUFFER_SIZE];
 		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
-			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
-			limpiar_buffers(buffer,sizeof(buffer),\
-					buffer_procesado,sizeof(buffer_procesado));
-			bytes_enviados=bytes_enviados+BUFFER_SIZE;
+			enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
+			//socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
+			//limpiar_buffers(buffer,sizeof(buffer),
+				//	buffer_procesado,sizeof(buffer_procesado));
+			//bytes_enviados=bytes_enviados+BUFFER_SIZE;
 		}
 		//bytes_enviados=bytes_enviados+tamanio;
 	}
@@ -130,10 +138,12 @@ int enviar_datos_rc4(archivo_t* self,\
 		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 		    rc4_cifrar(S_cliente,buffer,buffer_procesado,\
 		    				&rc4_cliente,&i_cliente,&j_cliente,BUFFER_SIZE);
-			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
-			limpiar_buffers(buffer,sizeof(buffer),\
-					buffer_procesado,sizeof(buffer_procesado));
-			bytes_enviados=bytes_enviados+BUFFER_SIZE;
+		    enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado\
+		    		,sizeof(buffer_procesado),&bytes_enviados);
+			//socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
+			//limpiar_buffers(buffer,sizeof(buffer),
+				//	buffer_procesado,sizeof(buffer_procesado));
+			//bytes_enviados=bytes_enviados+BUFFER_SIZE;
 		}
 		//bytes_enviados=bytes_enviados+tamanio;
 	}
