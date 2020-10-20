@@ -2,7 +2,7 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-#define BUFFER_ESPERADO 1
+#define BUFFER_ESPERADO 60
 
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
