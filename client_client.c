@@ -2,7 +2,7 @@
 #define BUFFER_SIZE 64
 #define ERROR -1
 #define EXITO 0
-//a
+
 
 int abrir_y_validar_archivo(int argc,char const *argv[],\
 		archivo_t* archivo,socket_t* socket){
@@ -22,6 +22,7 @@ int abrir_y_validar_archivo(int argc,char const *argv[],\
     return EXITO;
 }
 
+
 int cerrar_archivo(archivo_t* archivo){
     if (archivo->fp != stdin){
         fclose(archivo->fp);
@@ -29,12 +30,14 @@ int cerrar_archivo(archivo_t* archivo){
     return 0;
 }
 
+
 int longitud_archivo(archivo_t* archivo){
     fseek(archivo->fp, 0, SEEK_END);
     int longitud_mensaje = ftell(archivo->fp);
     rewind(archivo->fp);
     return longitud_mensaje;
 }
+
 
 void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
 		unsigned char* buffer_procesado,size_t buffer_proc_len,int* bytes_enviados){
@@ -74,6 +77,7 @@ int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 	}
     return 0;
 }
+
 
 int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
     unsigned char buff[BUFFER_SIZE];

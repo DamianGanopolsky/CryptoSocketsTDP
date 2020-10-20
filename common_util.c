@@ -3,8 +3,7 @@
 #define EXITO 0
 #define LARGO_VECTOR_CLAVE 300
 
-//Recibe el argumento correspondiente a la clave que
-//le llega al main y devuelve la clave sin el --key
+
 int slice(const char* argumento,char* clave){
     int tamanio_clave= strlen(argumento)-6;
     //Establezco un limite en el tamaño de la

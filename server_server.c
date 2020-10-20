@@ -4,6 +4,7 @@
 #include "common_rc4_encryption.h"
 #define BUFFER_ESPERADO 64
 
+
 void imprimir_y_liberar(unsigned char* ultimo_mensaje,\
 		unsigned char* ultimo_mensaje_desencriptado,size_t caracteres_recibidos){
 	fwrite(ultimo_mensaje_desencriptado, 1, caracteres_recibidos, stdout);
@@ -32,6 +33,7 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
+
 
 void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
@@ -81,6 +83,7 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
+
 
 void recibir_datos(const char* argumento,char* clave,socket_t* socket_peer){
     if (strcmp(argumento,"--method=cesar")==0){
