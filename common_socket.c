@@ -75,7 +75,7 @@ void socket_bind_and_listen(socket_t *self,\
     }
 
     if (rp == NULL) {               /* No address succeeded */
-        fprintf(stderr, "Could not bind\n");
+        fprintf(stderr, "No se pudo hacer el bind\n");
         return;
     }
 

@@ -1,15 +1,20 @@
 #include "client_procesar_datos.h"
 #define BUFFER_SIZE 64
+#define ERROR -1
+#define EXITO 0
 
 
 int abrir_archivo(archivo_t* self, const char* file_name){
-	if(file_name!=NULL){
+	if (file_name!=NULL){
 		self->fp=fopen(file_name,"rb");
+		if (self->fp==NULL){
+			fprintf(stderr,"No se pudo leer el archivo\n");
+			return ERROR;
+		}
 	}else{
 		self->fp= stdin;
 	}
-    //ACA SE PUEDEN HACER VERIFICACIONES
-    return 0;
+    return EXITO;
 }
 
 
@@ -73,14 +78,16 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,tamanio);
 			socket_send(socket,buffer_procesado,tamanio);
 			free(buffer_procesado);
+			//bytes_enviados=bytes_enviados+tamanio;
 		}else{
 			tamanio=BUFFER_SIZE;
 		    unsigned char buffer_procesado[BUFFER_SIZE];
 		    memset(buffer_procesado,0,sizeof(buffer_procesado));
-			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,tamanio);
+			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
 			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 			limpiar_buffers(buffer,sizeof(buffer),\
 					buffer_procesado,sizeof(buffer_procesado));
+			//bytes_enviados=bytes_enviados+BUFFER_SIZE;
 		}
 		bytes_enviados=bytes_enviados+tamanio;
 	}
@@ -99,7 +106,7 @@ int enviar_datos_rc4(archivo_t* self,\
 	inicializar_rc4(clave, strlen((char*)clave),\
 			S_cliente,&rc4_cliente,longitud_mensaje);
 
-	int i_cliente=0,j_cliente=0;
+	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
 
 	while (!feof(self->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t

@@ -20,4 +20,4 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char*\
 void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
 		unsigned char* buffer_normalizado,rc4_t* self,int* i,int* j,int tamanio);
 
-#endif /* COMMON_VIGENERE_ENCRYPTION_H_ */
+#endif /* COMMON_RC4_ENCRYPTION_H_ */
