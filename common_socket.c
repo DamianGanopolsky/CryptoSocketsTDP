@@ -13,34 +13,27 @@ void socket_uninit(socket_t *self){
 void socket_connect(socket_t *self, const char *host, const char *service){
     struct addrinfo hints;
     struct addrinfo *result, *rp;
-    int s,sfd;
-
+    int codigo_getaddrinfo,socketfd;
     memset(&hints, 0, sizeof(struct addrinfo));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = 0;
     hints.ai_protocol = 0;
-
-    s = getaddrinfo(host, service, &hints, &result);
-    if (s != 0) {
-    	fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(s));
+    codigo_getaddrinfo = getaddrinfo(host, service, &hints, &result);
+    if (codigo_getaddrinfo != 0) {
+    	fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(codigo_getaddrinfo));
     	return;
     }
-
     for (rp = result; rp != NULL; rp = rp->ai_next) {
-    	sfd = socket(rp->ai_family, rp->ai_socktype,rp->ai_protocol);
-
-        if (sfd == -1)
+    	socketfd = socket(rp->ai_family, rp->ai_socktype,rp->ai_protocol);
+        if (socketfd == -1)
         	continue;
-
-        if (connect(sfd, rp->ai_addr, rp->ai_addrlen) != -1)
+        if (connect(socketfd, rp->ai_addr, rp->ai_addrlen) != -1)
         	break;
-
-        close(sfd);
+        close(socketfd);
     }
-    self->fd=sfd;
+    self->fd=socketfd;
     freeaddrinfo(result);
-
     if (rp == NULL) {
     	fprintf(stderr, "No se pudo conectar\n");
     	return;
@@ -57,31 +50,26 @@ void socket_bind_and_listen(socket_t *self,\
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = 0;
+    //Obtengo la lista de resultados para el servicio
     getaddrinfo(NULL, service, &hints, &result);
-
 	int val_opt=1;
 	setsockopt(self->fd,SOL_SOCKET,SO_REUSEADDR,&val_opt,sizeof(val_opt));
-
+	//Itero la lista, si no puedo bindear sigo intentando
+	//con los siguientes resultados
     for (rp = result; rp != NULL; rp = rp->ai_next) {
         fd = socket(rp->ai_family,rp->ai_socktype,rp->ai_protocol);
-
         if (fd == -1)
             continue;
-
         if (bind(fd, rp->ai_addr, rp->ai_addrlen) == 0)
             break;                  /* Success */
-
         close(fd);
     }
-
     if (rp == NULL) {               /* No address succeeded */
         fprintf(stderr, "No se pudo hacer el bind\n");
         return;
     }
-
     freeaddrinfo(result);
     listen(fd, LONGITUD_COLA);
-
     self->fd=fd;
 }
 
@@ -142,7 +130,7 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 		if (caracteres_recibidos==-1){
 			fprintf(stderr,"Error al recibir \n");
 			break;
-		}else if (caracteres_recibidos==0){//Si es 0, llegue al 'end of file' paro de recibir
+		}else if (caracteres_recibidos==0){//Si es 0, llegue al 'end of file', paro de recibir
 			return length-longitud_restante;
 		}else{
 	        puntero_a_caracter_actual=caracteres_recibidos\
