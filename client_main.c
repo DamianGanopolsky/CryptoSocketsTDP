@@ -11,7 +11,6 @@ int main(int argc, char const *argv[]) {
     socket_t socket;
     socket_init(&socket);
     socket_connect(&socket, argv[1], argv[2]);
-
 	if(argc<5){
 		fprintf(stderr,"Cantidad de parametros invalidos \n");
 	}
