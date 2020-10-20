@@ -113,7 +113,7 @@ int enviar_datos_rc4(archivo_t* self,\
 	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(self);
     unsigned char S_cliente[256];
-    memset(S_cliente,0,sizeof(S_cliente));
+   // memset(S_cliente,0,sizeof(S_cliente));
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
 			S_cliente,&rc4_cliente,longitud_mensaje);
