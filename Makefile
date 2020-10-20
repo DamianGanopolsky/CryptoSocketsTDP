@@ -13,7 +13,7 @@ extension = c
 # toma todos los archivos con la extensiÃ³n mencionada. Para especificar hay que
 # descomentar la lÃ­nea (quitarle el '#' del principio).
 # NOTA: No poner cabeceras (.h).
-fuentes_client = client_procesar_datos.c client_main.c
+fuentes_client = client_client.c client_main.c
 fuentes_server = server_main.c server_server.c
 fuentes_common = common_cesar_encryption.c common_vigenere_encryption.c common_rc4_encryption.c common_socket.c common_wrap_socket.c common_util.c
 

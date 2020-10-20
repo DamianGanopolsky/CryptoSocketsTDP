@@ -1,33 +1,38 @@
-#include "client_procesar_datos.h"
+#include "client_client.h"
 #define BUFFER_SIZE 64
 #define ERROR -1
 #define EXITO 0
+//a
 
-int abrir_archivo(archivo_t* self, const char* file_name){
-	if (file_name!=NULL){
-		self->fp=fopen(file_name,"rb");
-		if (self->fp==NULL){
-			fprintf(stderr,"No se pudo leer el archivo\n");
-			return ERROR;
-		}
-	}else{
-		self->fp= stdin;
+int abrir_y_validar_archivo(int argc,char const *argv[],\
+		archivo_t* archivo,socket_t* socket){
+	if(argc<5){
+		fprintf(stderr,"Cantidad de parametros invalidos \n");
+		return ERROR;
 	}
+    if (argc==5){ //Si son 5 argumentos, la entrada es por stdin
+    	archivo->fp= stdin;
+    }else{
+    	archivo->fp=fopen(argv[6],"rb");
+    			if (archivo->fp==NULL){
+    				fprintf(stderr,"No se pudo leer el archivo\n");
+    				return ERROR;
+    			}
+    }
     return EXITO;
 }
 
-
-int cerrar_archivo(archivo_t* self){
-    if (self->fp != stdin){
-        fclose(self->fp);
+int cerrar_archivo(archivo_t* archivo){
+    if (archivo->fp != stdin){
+        fclose(archivo->fp);
     }
     return 0;
 }
 
-int longitud_archivo(archivo_t* self){
-    fseek(self->fp, 0, SEEK_END);
-    int longitud_mensaje = ftell(self->fp);
-    rewind(self->fp);
+int longitud_archivo(archivo_t* archivo){
+    fseek(archivo->fp, 0, SEEK_END);
+    int longitud_mensaje = ftell(archivo->fp);
+    rewind(archivo->fp);
     return longitud_mensaje;
 }
 
@@ -48,12 +53,12 @@ void enviar_ultimo_bloque(socket_t* socket,unsigned char* buffer_procesado,\
 }
 
 
-int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
+int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 	unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
-	int longitud_mensaje=longitud_archivo(self);
-	while (!feof(self->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
+	int longitud_mensaje=longitud_archivo(archivo);
+	while (!feof(archivo->fp)) {
+		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
 		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
 			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
@@ -69,14 +74,14 @@ int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
     return 0;
 }
 
-int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
+int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
     unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
-	int longitud_mensaje=longitud_archivo(self);
+	int longitud_mensaje=longitud_archivo(archivo);
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
-	while (!feof(self->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
+	while (!feof(archivo->fp)) {
+		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
 		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
 			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
@@ -93,16 +98,16 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 }
 
 
-int enviar_datos_rc4(archivo_t* self,\
+int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buffer[BUFFER_SIZE],S_cliente[256];
-	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(self);
+	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(archivo);
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
 			S_cliente,&rc4_cliente,longitud_mensaje);
 	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
-	while (!feof(self->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, self->fp);  //Devuelve un size_t
+	while (!feof(archivo->fp)) {
+		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
 		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
 			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);

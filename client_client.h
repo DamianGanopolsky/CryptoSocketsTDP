@@ -10,8 +10,10 @@ typedef struct{
     FILE* fp;
 } archivo_t;
 
-int abrir_archivo(archivo_t* self, const char* file_name);
 
-int cerrar_archivo(archivo_t* self);
+int abrir_y_validar_archivo(int argc,char const *argv[],\
+		archivo_t* archivo,socket_t* socket);
+
+int cerrar_archivo(archivo_t* archivo);
 
 void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket);

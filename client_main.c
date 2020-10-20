@@ -1,4 +1,4 @@
-#include "client_procesar_datos.h"
+#include "client_client.h"
 #include "common_socket.h"
 #include "common_util.h"
 #define LARGO_VECTOR_CLAVE 300
@@ -11,16 +11,8 @@ int main(int argc, char const *argv[]) {
     socket_t socket;
     socket_init(&socket);
     socket_connect(&socket, argv[1], argv[2]);
-	if(argc<5){
-		fprintf(stderr,"Cantidad de parametros invalidos \n");
-	}
-    if (argc==5){ //Si son 5 argumentos, asumo que la entrada es por stdin
-    	abrir_archivo(&archivo,NULL);
-    }else{
-    	if(abrir_archivo(&archivo, argv[6])==ERROR){
-    		socket_uninit(&socket); //Libero recurso previamente inicializado
-    		return ERROR;
-    	}
+    if(abrir_y_validar_archivo(argc,argv,&archivo,&socket)==ERROR){
+    	return ERROR;
     }
     char clave[LARGO_VECTOR_CLAVE];
     if(slice(argv[4],clave)==ERROR){

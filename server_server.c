@@ -2,7 +2,7 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-#define BUFFER_ESPERADO 60
+#define BUFFER_ESPERADO 64
 
 void imprimir_y_liberar(unsigned char* ultimo_mensaje,\
 		unsigned char* ultimo_mensaje_desencriptado,size_t caracteres_recibidos){
@@ -10,6 +10,7 @@ void imprimir_y_liberar(unsigned char* ultimo_mensaje,\
 	free(ultimo_mensaje);
 	free(ultimo_mensaje_desencriptado);
 }
+
 
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
@@ -24,9 +25,6 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			descifrado_cesar(ultimo_mensaje,\
 					ultimo_mensaje_desencriptado,clave,recibidos);
 			imprimir_y_liberar(ultimo_mensaje,ultimo_mensaje_desencriptado,recibidos);
-			//fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
-			//free(ultimo_mensaje);
-			//free(ultimo_mensaje_desencriptado);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
@@ -50,13 +48,9 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			descifrado_vigenere(ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,clave,&vigenere,recibidos);
 			imprimir_y_liberar(ultimo_mensaje,ultimo_mensaje_desencriptado,recibidos);
-			//fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
-			//free(ultimo_mensaje);
-			//free(ultimo_mensaje_desencriptado);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		//memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
@@ -70,7 +64,7 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	rc4_t rc4;
 	unsigned char S[256];
 	inicializar_rc4(clave,strlen((char*)clave),S,&rc4,0);
-	int i=0,j=0;
+	int i=0,j=0; //Inicializo los estados de rc4
 	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 		if (recibidos<BUFFER_ESPERADO){
@@ -80,9 +74,6 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 			rc4_descifrar(S,ultimo_mensaje,ultimo_mensaje_desencriptado\
 					,&rc4,&i,&j,recibidos);
 			imprimir_y_liberar(ultimo_mensaje,ultimo_mensaje_desencriptado,recibidos);
-			//fwrite(ultimo_mensaje_desencriptado, 1, recibidos, stdout);
-			//free(ultimo_mensaje);
-			//free(ultimo_mensaje_desencriptado);
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
