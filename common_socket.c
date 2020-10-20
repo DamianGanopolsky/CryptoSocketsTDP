@@ -97,15 +97,13 @@ ssize_t socket_send(socket_t *self, unsigned char *buffer, size_t length){
     	// Si caracteres enviados=-1, hubo un error en el intento de envio
         if (caracteres_enviados==-1){
         	if (errno==EACCES){
-        		fprintf(stderr,"No esta permitida la escritura en el fd de destino\n");
-        		}
-        	else if (errno==EAGAIN){
+        		fprintf(stderr,\
+        				"No esta permitida la escritura en el fd de destino\n");
+        	}else if (errno==EAGAIN){
         		fprintf(stderr,"El socket no esta ligado a una direccion \n");
-        	}
-        	else if (errno==EBADF){
+        	}else if (errno==EBADF){
         		fprintf(stderr,"sockfd no es un file descriptor valido\n");
-        	}
-        	else{
+        	}else{
         		fprintf(stderr,"Error al enviar \n");
         	}
         	break;
@@ -130,8 +128,8 @@ ssize_t socket_receive(socket_t *self,unsigned char *buffer, size_t length){
 		if (caracteres_recibidos==-1){
 			fprintf(stderr,"Error al recibir \n");
 			break;
-		}else if (caracteres_recibidos==0){//Si es 0, llegue al 'end of file', paro de recibir
-			return length-longitud_restante;
+		}else if (caracteres_recibidos==0){//Si es 0, llegue al "
+			return length-longitud_restante; // end of file", paro de recibir
 		}else{
 	        puntero_a_caracter_actual=caracteres_recibidos\
 	        		+puntero_a_caracter_actual;

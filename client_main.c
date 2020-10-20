@@ -11,11 +11,11 @@ int main(int argc, char const *argv[]) {
     socket_t socket;
     socket_init(&socket);
     socket_connect(&socket, argv[1], argv[2]);
-    if(abrir_y_validar_archivo(argc,argv,&archivo,&socket)==ERROR){
+    if (abrir_y_validar_archivo(argc,argv,&archivo,&socket)==ERROR){
     	return ERROR;
     }
     char clave[LARGO_VECTOR_CLAVE];
-    if(slice(argv[4],clave)==ERROR){
+    if (slice(argv[4],clave)==ERROR){
     	return ERROR;
     }
     enviar_datos(argv[3],clave,&archivo,&socket);

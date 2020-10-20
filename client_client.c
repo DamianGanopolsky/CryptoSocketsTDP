@@ -68,30 +68,32 @@ int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 		}else{
 		    unsigned char buffer_procesado[BUFFER_SIZE];
 		    cifrado_cesar(buffer,buffer_procesado,clave,BUFFER_SIZE);
-		    enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
+		    enviar_bloque(socket,buffer,sizeof(buffer),\
+		    		buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
 		}
 	}
     return 0;
 }
 
 int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
-    unsigned char buffer[BUFFER_SIZE];
+    unsigned char buff[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(archivo);
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
 	while (!feof(archivo->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
+		fread(buff, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
 		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
 			tamanio=longitud_mensaje-bytes_enviados;
 		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
 		    memset(buffer_procesado,0,tamanio);
-			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,tamanio);
+			cifrado_vigenere(buff,buffer_procesado,clave,&vigenere_cliente,tamanio);
 			enviar_ultimo_bloque(socket,buffer_procesado,&tamanio,&bytes_enviados);
 		}else{
-		    unsigned char buffer_procesado[BUFFER_SIZE];
-			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
-			enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
+		    unsigned char buff_procesado[BUFFER_SIZE];
+			cifrado_vigenere(buff,buff_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
+			enviar_bloque(socket,buff,sizeof(buff),buff_procesado\
+					,sizeof(buff_procesado),&bytes_enviados);
 		}
 	}
     return 0;
@@ -127,7 +129,8 @@ int enviar_datos_rc4(archivo_t* archivo,\
 }
 
 
-void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket){
+void enviar_datos(const char* argumento,char* clave\
+		, archivo_t* archivo,socket_t* socket){
     if (strcmp(argumento,"--method=cesar")==0){
     	int clave_numerica=atoi(clave);
     	enviar_datos_cesar(archivo,clave_numerica,socket);
