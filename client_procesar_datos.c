@@ -1,5 +1,5 @@
 #include "client_procesar_datos.h"
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 1
 #define ERROR -1
 #define EXITO 0
 
@@ -32,18 +32,7 @@ int longitud_archivo(archivo_t* self){
 }
 
 
-void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket){
-    if (strcmp(argumento,"--method=cesar")==0){
-    	int clave_numerica=atoi(clave);
-    	enviar_datos_cesar(archivo,clave_numerica,socket);
-    }
-    if (strcmp(argumento,"--method=vigenere")==0){
-    	enviar_datos_vigenere(archivo,clave,socket);
-    }
-    if (strcmp(argumento,"--method=rc4")==0){
-    	enviar_datos_rc4(archivo,clave,socket);
-    }
-}
+
 
 int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 	unsigned char buffer[BUFFER_SIZE];
@@ -63,7 +52,7 @@ int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
 		}else{
 			tamanio=BUFFER_SIZE;
 		    unsigned char buffer_procesado[BUFFER_SIZE];
-		    memset(buffer_procesado,0,sizeof(buffer_procesado));
+		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 		    cifrado_cesar(buffer,buffer_procesado,clave,tamanio);
 			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 			limpiar_buffers(buffer,sizeof(buffer),\
@@ -95,7 +84,7 @@ int enviar_datos_vigenere(archivo_t* self,char* clave,socket_t* socket){
 		}else{
 			tamanio=BUFFER_SIZE;
 		    unsigned char buffer_procesado[BUFFER_SIZE];
-		    memset(buffer_procesado,0,sizeof(buffer_procesado));
+		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 			cifrado_vigenere(buffer,buffer_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
 			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));
 			limpiar_buffers(buffer,sizeof(buffer),\
@@ -145,4 +134,18 @@ int enviar_datos_rc4(archivo_t* self,\
 		bytes_enviados=bytes_enviados+tamanio;
 	}
     return 0;
+}
+
+
+void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket){
+    if (strcmp(argumento,"--method=cesar")==0){
+    	int clave_numerica=atoi(clave);
+    	enviar_datos_cesar(archivo,clave_numerica,socket);
+    }
+    if (strcmp(argumento,"--method=vigenere")==0){
+    	enviar_datos_vigenere(archivo,clave,socket);
+    }
+    if (strcmp(argumento,"--method=rc4")==0){
+    	enviar_datos_rc4(archivo,clave,socket);
+    }
 }

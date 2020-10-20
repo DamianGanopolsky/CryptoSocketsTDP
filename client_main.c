@@ -30,5 +30,5 @@ int main(int argc, char const *argv[]) {
     enviar_datos(argv[3],clave,&archivo,&socket);
     cerrar_archivo(&archivo);
     socket_uninit(&socket);
-	return 0;
+	return EXITO;
 }

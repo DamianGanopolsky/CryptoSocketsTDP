@@ -2,20 +2,7 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-#define BUFFER_ESPERADO 64
-
-void recibir_datos(const char* argumento,char* clave,socket_t* socket_peer){
-    if (strcmp(argumento,"--method=cesar")==0){
-    	int clave_numerica=atoi(clave);
-    	recibir_mensaje_cesar(socket_peer,clave_numerica);
-    }
-    if (strcmp(argumento,"--method=vigenere")==0){
-    	recibir_mensaje_vigenere(socket_peer,clave);
-    }
-    if (strcmp(argumento,"--method=rc4")==0){
-    	recibir_mensaje_rc4(socket_peer,clave);
-    }
-}
+#define BUFFER_ESPERADO 1
 
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
@@ -78,7 +65,7 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	ssize_t recibidos=BUFFER_ESPERADO;
 	rc4_t rc4;
 	unsigned char S[256];
-	memset(S,0,sizeof(S));
+	//memset(S,0,sizeof(S));
 	inicializar_rc4(clave,strlen((char*)clave),S,&rc4,0);
 	int i=0,j=0;
 
@@ -102,3 +89,18 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
 }
+
+void recibir_datos(const char* argumento,char* clave,socket_t* socket_peer){
+    if (strcmp(argumento,"--method=cesar")==0){
+    	int clave_numerica=atoi(clave);
+    	recibir_mensaje_cesar(socket_peer,clave_numerica);
+    }
+    if (strcmp(argumento,"--method=vigenere")==0){
+    	recibir_mensaje_vigenere(socket_peer,clave);
+    }
+    if (strcmp(argumento,"--method=rc4")==0){
+    	recibir_mensaje_rc4(socket_peer,clave);
+    }
+}
+
+
