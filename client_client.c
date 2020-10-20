@@ -133,16 +133,16 @@ int enviar_datos_rc4(archivo_t* archivo,\
 }
 
 
-void enviar_datos(const char* argumento,char* clave\
+void enviar_datos(const char* metodo,char* clave\
 		, archivo_t* archivo,socket_t* socket){
-    if (strcmp(argumento,"--method=cesar")==0){
+    if (strcmp(metodo,"--method=cesar")==0){
     	int clave_numerica=atoi(clave);
     	enviar_datos_cesar(archivo,clave_numerica,socket);
     }
-    if (strcmp(argumento,"--method=vigenere")==0){
+    if (strcmp(metodo,"--method=vigenere")==0){
     	enviar_datos_vigenere(archivo,clave,socket);
     }
-    if (strcmp(argumento,"--method=rc4")==0){
+    if (strcmp(metodo,"--method=rc4")==0){
     	enviar_datos_rc4(archivo,clave,socket);
     }
 }

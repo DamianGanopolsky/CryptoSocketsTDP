@@ -85,15 +85,15 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 }
 
 
-void recibir_datos(const char* argumento,char* clave,socket_t* socket_peer){
-    if (strcmp(argumento,"--method=cesar")==0){
+void recibir_datos(const char* metodo,char* clave,socket_t* socket_peer){
+    if (strcmp(metodo,"--method=cesar")==0){
     	int clave_numerica=atoi(clave);
     	recibir_mensaje_cesar(socket_peer,clave_numerica);
     }
-    if (strcmp(argumento,"--method=vigenere")==0){
+    if (strcmp(metodo,"--method=vigenere")==0){
     	recibir_mensaje_vigenere(socket_peer,clave);
     }
-    if (strcmp(argumento,"--method=rc4")==0){
+    if (strcmp(metodo,"--method=rc4")==0){
     	recibir_mensaje_rc4(socket_peer,clave);
     }
 }

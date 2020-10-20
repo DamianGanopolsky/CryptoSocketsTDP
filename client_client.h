@@ -20,5 +20,5 @@ int abrir_y_validar_archivo(int argc,char const *argv[],\
 int cerrar_archivo(archivo_t* archivo);
 
 //Envia todos los datos contenidos en el archivo al servidor
-void enviar_datos(const char* argumento,char* clave,\
+void enviar_datos(const char* metodo,char* clave,\
 		archivo_t* archivo,socket_t* socket);
