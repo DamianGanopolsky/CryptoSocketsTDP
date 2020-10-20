@@ -1,23 +1,9 @@
 #include "client_procesar_datos.h"
 #include "common_socket.h"
+#include "common_util.h"
 #define LARGO_VECTOR_CLAVE 300
 #define EXITO 0
 #define ERROR -1
-
-//Recibe el argumento correspondiente a la clave que
-//le llega al main y devuelve la clave sin el --key
-int slice(const char* argumento,char* clave){
-    int tamanio_clave= strlen(argumento)-6;
-    //Establezco un limite en el tamaño de la
-    //clave para evitar un buffer overflow
-    if (tamanio_clave>LARGO_VECTOR_CLAVE){
-    	fprintf(stderr, "Tamaño de clave demasiado grande \n");
-    	return ERROR;
-    }
-    memcpy(clave,&argumento[6],tamanio_clave);
-    clave[tamanio_clave] = '\0';
-    return EXITO;
-}
 
 
 int abrir_y_validar_archivo(int argc,char const *argv[],archivo_t* archivo,socket_t* socket){
@@ -33,20 +19,6 @@ int abrir_y_validar_archivo(int argc,char const *argv[],archivo_t* archivo,socke
     	}
     }
     return EXITO;
-}
-
-
-void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket){
-    if (strcmp(argumento,"--method=cesar")==0){
-    	int clave_numerica=atoi(clave);
-    	enviar_datos_cesar(archivo,clave_numerica,socket);
-    }
-    if (strcmp(argumento,"--method=vigenere")==0){
-    	enviar_datos_vigenere(archivo,clave,socket);
-    }
-    if (strcmp(argumento,"--method=rc4")==0){
-    	enviar_datos_rc4(archivo,clave,socket);
-    }
 }
 
 

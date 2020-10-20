@@ -9,8 +9,8 @@ typedef struct {
 	int longitud_mensaje;
 } rc4_t;
 
-void swap(unsigned char *s, unsigned int i, unsigned int j);
-
+//Inicializa el vector de caracteres de estado S e
+//inicializa los valores de los atributos del TDA.
 void inicializar_rc4(char *key,unsigned int key_length,\
 		unsigned char* S,rc4_t* self,int longitud_mensaje);
 

@@ -3,7 +3,6 @@
 #define ERROR -1
 #define EXITO 0
 
-
 int abrir_archivo(archivo_t* self, const char* file_name){
 	if (file_name!=NULL){
 		self->fp=fopen(file_name,"rb");
@@ -30,6 +29,20 @@ int longitud_archivo(archivo_t* self){
     int longitud_mensaje = ftell(self->fp);
     rewind(self->fp);
     return longitud_mensaje;
+}
+
+
+void enviar_datos(const char* argumento,char* clave, archivo_t* archivo,socket_t* socket){
+    if (strcmp(argumento,"--method=cesar")==0){
+    	int clave_numerica=atoi(clave);
+    	enviar_datos_cesar(archivo,clave_numerica,socket);
+    }
+    if (strcmp(argumento,"--method=vigenere")==0){
+    	enviar_datos_vigenere(archivo,clave,socket);
+    }
+    if (strcmp(argumento,"--method=rc4")==0){
+    	enviar_datos_rc4(archivo,clave,socket);
+    }
 }
 
 int enviar_datos_cesar(archivo_t* self,int clave,socket_t* socket){
@@ -122,7 +135,7 @@ int enviar_datos_rc4(archivo_t* self,\
 		}else{
 			tamanio=BUFFER_SIZE;
 		    unsigned char buffer_procesado[BUFFER_SIZE];
-		    memset(buffer_procesado,0,sizeof(buffer_procesado));
+		    //memset(buffer_procesado,0,sizeof(buffer_procesado));
 		    rc4_cifrar(S_cliente,buffer,buffer_procesado,\
 		    				&rc4_cliente,&i_cliente,&j_cliente,tamanio);
 			socket_send(socket,buffer_procesado,sizeof(buffer_procesado));

@@ -4,6 +4,19 @@
 #include "common_rc4_encryption.h"
 #define BUFFER_ESPERADO 64
 
+void recibir_datos(const char* argumento,char* clave,socket_t* socket_peer){
+    if (strcmp(argumento,"--method=cesar")==0){
+    	int clave_numerica=atoi(clave);
+    	recibir_mensaje_cesar(socket_peer,clave_numerica);
+    }
+    if (strcmp(argumento,"--method=vigenere")==0){
+    	recibir_mensaje_vigenere(socket_peer,clave);
+    }
+    if (strcmp(argumento,"--method=rc4")==0){
+    	recibir_mensaje_rc4(socket_peer,clave);
+    }
+}
+
 void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
@@ -24,7 +37,7 @@ void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
+		//memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
@@ -52,7 +65,7 @@ void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
+		//memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
 				clave,&vigenere,BUFFER_ESPERADO);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
@@ -84,7 +97,7 @@ void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 			break;
 		}
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
+		//memset(mensaje_desencriptado,0,sizeof(mensaje_desencriptado));
 		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
 		fwrite(mensaje_desencriptado, 1, BUFFER_ESPERADO, stdout);
 	}
