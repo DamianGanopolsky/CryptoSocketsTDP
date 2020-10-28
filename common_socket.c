@@ -5,13 +5,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <stdint.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-//#include <sys/socket.h>
 #include <netdb.h>
-
-
 
 
 void socket_init(socket_t *self){

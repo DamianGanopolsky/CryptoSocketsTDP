@@ -1,6 +1,6 @@
 #include "common_vigenere_encryption.h"
 #include <stdio.h>
-//#include <string.h>
+
 
 void inicializar_vigenere(vigenere_t* self,int longitud_clave){
 	self->posicion_cifrado=0;

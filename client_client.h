@@ -1,4 +1,6 @@
 #include "common_socket.h"
+#include "stdio.h"
+
 
 typedef struct{
     FILE* fp;

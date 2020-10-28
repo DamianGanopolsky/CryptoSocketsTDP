@@ -2,7 +2,6 @@
 #define COMMON_CESAR_ENCRYPTION_H_
 
 
-
 //Cifra la cadena enviada como argumento, y genera una
 //cadena_procesada con la cadena anterior codificada
 void cifrado_cesar(unsigned char* cadena,\

@@ -1,3 +1,4 @@
+#include <string.h>
 #include "client_client.h"
 #include "common_socket.h"
 #define LARGO_VECTOR_CLAVE 300

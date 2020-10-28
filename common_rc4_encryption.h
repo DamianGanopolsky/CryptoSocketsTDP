@@ -2,8 +2,6 @@
 #define COMMON_RC4_ENCRYPTION_H_
 
 
-
-
 typedef struct {
 	int longitud_mensaje;
 } rc4_t;

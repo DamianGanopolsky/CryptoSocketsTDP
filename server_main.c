@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "common_socket.h"
 #include "server_server.h"
 #define EXITO 0

@@ -2,7 +2,6 @@
 #define COMMON_VIGENERE_ENCRYPTION_H_
 
 
-
 typedef struct {
 	int posicion_cifrado;
 	int longitud_clave;

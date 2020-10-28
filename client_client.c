@@ -5,7 +5,6 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-
 #define BUFFER_SIZE 64
 #define ERROR -1
 #define EXITO 0

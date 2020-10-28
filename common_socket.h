@@ -1,6 +1,5 @@
 #ifndef COMMON_SOCKET_H_
 #define COMMON_SOCKET_H_
-
 #include <sys/types.h>
 
 
