@@ -48,40 +48,29 @@ int longitud_archivo(archivo_t* archivo){
 
 static void enviar_bloque(socket_t* socket,\
 		unsigned char* buffer,size_t buffer_len,unsigned char* buffer_procesado,\
-		size_t buffer_proc_len,int* bytes_enviados){
+		size_t buffer_proc_len){
 	socket_send(socket,buffer_procesado,buffer_proc_len);
 	memset(buffer,0,buffer_len);
 	memset(buffer_procesado,0,buffer_proc_len);
-	*bytes_enviados=*bytes_enviados+BUFFER_SIZE;
 }
 
 
-static void enviar_ultimo_bloque(socket_t* socket,\
-		unsigned char* buffer_procesado,int* tamanio,int* bytes_enviados){
-	socket_send(socket,buffer_procesado,*tamanio);
-	free(buffer_procesado);
-	*bytes_enviados=*bytes_enviados+*tamanio;
-}
+
+
 
 
 static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 	unsigned char buffer[BUFFER_SIZE];
-	int bytes_enviados=0,tamanio;
-	int longitud_mensaje=longitud_archivo(archivo);
+	int bytes_leidos;
 	while (!feof(archivo->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
-		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados;
-		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
-		    memset(buffer_procesado,0,tamanio);
-		    cifrado_cesar(buffer,buffer_procesado,clave,tamanio);
-		    enviar_ultimo_bloque(socket,buffer_procesado,&tamanio,&bytes_enviados);
-		}else{
-		    unsigned char buffer_procesado[BUFFER_SIZE];
-		    cifrado_cesar(buffer,buffer_procesado,clave,BUFFER_SIZE);
-		    enviar_bloque(socket,buffer,sizeof(buffer),\
-		    		buffer_procesado,sizeof(buffer_procesado),&bytes_enviados);
+		bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
+		if(bytes_leidos==0){
+			break;
 		}
+		unsigned char buffer_procesado[BUFFER_SIZE];
+		cifrado_cesar(buffer,buffer_procesado,clave,BUFFER_SIZE);
+		enviar_bloque(socket,buffer,sizeof(buffer),\
+				buffer_procesado,bytes_leidos);
 	}
     return 0;
 }
@@ -90,24 +79,18 @@ static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 static int enviar_datos_vigenere(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buff[BUFFER_SIZE];
-	int bytes_enviados=0,tamanio;
-	int longitud_mensaje=longitud_archivo(archivo);
+	int bytes_leidos;
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
 	while (!feof(archivo->fp)) {
-		fread(buff, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
-		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados;
-		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
-		    memset(buffer_procesado,0,tamanio);
-			cifrado_vigenere(buff,buffer_procesado,clave,&vigenere_cliente,tamanio);
-			enviar_ultimo_bloque(socket,buffer_procesado,&tamanio,&bytes_enviados);
-		}else{
-		    unsigned char buff_procesado[BUFFER_SIZE];
-			cifrado_vigenere(buff,buff_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
-			enviar_bloque(socket,buff,sizeof(buff),buff_procesado\
-					,sizeof(buff_procesado),&bytes_enviados);
+		bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
+		if (bytes_leidos==0){
+			break;
 		}
+		unsigned char buff_procesado[BUFFER_SIZE];
+		cifrado_vigenere(buff,buff_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
+		enviar_bloque(socket,buff,sizeof(buff),buff_procesado\
+				,bytes_leidos);
 	}
     return 0;
 }
@@ -116,27 +99,21 @@ static int enviar_datos_vigenere(archivo_t* archivo,\
 static int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buffer[BUFFER_SIZE],S_cliente[CANT_CARACTERES_ASCII];
-	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(archivo);
+    int bytes_leidos;
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
 			S_cliente,&rc4_cliente);
 	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
 	while (!feof(archivo->fp)) {
-		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
-		if (longitud_mensaje-bytes_enviados<BUFFER_SIZE){
-			tamanio=longitud_mensaje-bytes_enviados;
-		    unsigned char* buffer_procesado=malloc(sizeof(char)*tamanio);
-		    memset(buffer_procesado,0,tamanio);
-		    rc4_cifrar(S_cliente,buffer,buffer_procesado,\
-		    				&rc4_cliente,&i_cliente,&j_cliente,tamanio);
-		    enviar_ultimo_bloque(socket,buffer_procesado,&tamanio,&bytes_enviados);
-		}else{
-		    unsigned char buffer_procesado[BUFFER_SIZE];
-		    rc4_cifrar(S_cliente,buffer,buffer_procesado,\
-		    				&rc4_cliente,&i_cliente,&j_cliente,BUFFER_SIZE);
-		    enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado\
-		    		,sizeof(buffer_procesado),&bytes_enviados);
+		bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
+		if(bytes_leidos==0){
+			break;
 		}
+		unsigned char buffer_procesado[BUFFER_SIZE];
+		rc4_cifrar(S_cliente,buffer,buffer_procesado,\
+						&rc4_cliente,&i_cliente,&j_cliente,bytes_leidos);
+		enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado\
+				,bytes_leidos);
 	}
     return 0;
 }

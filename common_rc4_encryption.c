@@ -43,9 +43,12 @@ void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char*\
 	size_t k=0;
 	while (k<tamanio){
 		int indice;
-		if ((buffer[k]=='\0')||(buffer[k]=='\n')){
-			break;
-		}
+		//if ((buffer[k]=='\0')||(buffer[k]=='\n')){
+			//break;
+		//}
+		//if ((buffer[k]=='\0')){
+			//break;
+		//}
 		/*
 		self->i=(self->j+1) % 256;
 		self->j = (self->j+self->S[self->i]) % 256;
