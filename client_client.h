@@ -3,7 +3,6 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-#include "common_util.h"
 #include "common_socket.h"
 
 typedef struct{

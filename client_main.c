@@ -1,6 +1,5 @@
 #include "client_client.h"
 #include "common_socket.h"
-#include "common_util.h"
 #define LARGO_VECTOR_CLAVE 300
 #define EXITO 0
 #define ERROR -1
@@ -15,9 +14,10 @@ int main(int argc, char const *argv[]) {
     	return ERROR;
     }
     char clave[LARGO_VECTOR_CLAVE];
-    if (slice(argv[4],clave)==ERROR){
-    	return ERROR;
-    }
+    //Me quedo solo con la clave sacando el --key del argumento
+    int tamanio_clave= strlen(argv[4])-6;
+    memcpy(clave,&argv[4][6],tamanio_clave);
+    clave[tamanio_clave] = '\0';
     enviar_datos(argv[3],clave,&archivo,&socket);
     cerrar_archivo(&archivo);
     socket_uninit(&socket);
