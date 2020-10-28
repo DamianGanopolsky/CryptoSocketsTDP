@@ -41,13 +41,11 @@ static void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
 	rc4_t rc4;
-	unsigned char S[CANT_CARACTERES_ASCII];
-	inicializar_rc4(clave,strlen((char*)clave),S,&rc4);
-	int i=0,j=0; //Inicializo los estados de rc4
+	inicializar_rc4(clave,strlen((char*)clave),&rc4);
 	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		rc4_descifrar(S,mensaje,mensaje_desencriptado,&rc4,&i,&j,recibidos);
+		rc4_descifrar(mensaje,mensaje_desencriptado,&rc4,recibidos);
 		fwrite(mensaje_desencriptado, 1, recibidos, stdout);
 	}
 }

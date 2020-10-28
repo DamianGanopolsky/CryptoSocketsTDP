@@ -84,19 +84,18 @@ static int enviar_datos_vigenere(archivo_t* archivo,\
 
 static int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
-    unsigned char buffer[BUFFER_SIZE],S_cliente[CANT_CARACTERES_ASCII];
+    unsigned char buffer[BUFFER_SIZE];
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
-			S_cliente,&rc4_cliente);
-	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
+			&rc4_cliente);
 	while (!feof(archivo->fp)) {
 		int bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);
 		if (bytes_leidos==0){
 			break;
 		}
 		unsigned char buffer_procesado[BUFFER_SIZE];
-		rc4_cifrar(S_cliente,buffer,buffer_procesado,\
-						&rc4_cliente,&i_cliente,&j_cliente,bytes_leidos);
+		rc4_cifrar(buffer,buffer_procesado,\
+						&rc4_cliente,bytes_leidos);
 		enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado\
 				,bytes_leidos);
 	}
