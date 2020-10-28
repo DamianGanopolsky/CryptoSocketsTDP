@@ -12,7 +12,7 @@
 
 static void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
-	ssize_t recibidos;
+	ssize_t recibidos=BUFFER_ESPERADO;
 	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
@@ -24,7 +24,7 @@ static void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
 
 static void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
-	ssize_t recibidos;
+	ssize_t recibidos=BUFFER_ESPERADO;
 	vigenere_t vigenere;
 	inicializar_vigenere(&vigenere,strlen((char*)clave));
 	while (recibidos==BUFFER_ESPERADO){
@@ -39,7 +39,7 @@ static void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
 
 static void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
-	ssize_t recibidos;
+	ssize_t recibidos=BUFFER_ESPERADO;
 	rc4_t rc4;
 	unsigned char S[CANT_CARACTERES_ASCII];
 	inicializar_rc4(clave,strlen((char*)clave),S,&rc4);

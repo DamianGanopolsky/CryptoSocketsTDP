@@ -49,10 +49,9 @@ static void enviar_bloque(socket_t* socket,\
 
 static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 	unsigned char buffer[BUFFER_SIZE];
-	int bytes_leidos;
 	while (!feof(archivo->fp)) {
-		bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
-		if(bytes_leidos==0){
+		int bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);
+		if (bytes_leidos==0){
 			break;
 		}
 		unsigned char buffer_procesado[BUFFER_SIZE];
@@ -67,11 +66,10 @@ static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 static int enviar_datos_vigenere(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buff[BUFFER_SIZE];
-	int bytes_leidos;
 	vigenere_t vigenere_cliente;
     inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
 	while (!feof(archivo->fp)) {
-		bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
+		int bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);
 		if (bytes_leidos==0){
 			break;
 		}
@@ -87,14 +85,13 @@ static int enviar_datos_vigenere(archivo_t* archivo,\
 static int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buffer[BUFFER_SIZE],S_cliente[CANT_CARACTERES_ASCII];
-    int bytes_leidos;
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
 			S_cliente,&rc4_cliente);
 	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
 	while (!feof(archivo->fp)) {
-		bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t
-		if(bytes_leidos==0){
+		int bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);
+		if (bytes_leidos==0){
 			break;
 		}
 		unsigned char buffer_procesado[BUFFER_SIZE];
