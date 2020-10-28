@@ -39,7 +39,7 @@ int longitud_archivo(archivo_t* archivo){
 }
 
 
-void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
+static void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
 		unsigned char* buffer_procesado,size_t buffer_proc_len,int* bytes_enviados){
 	socket_send(socket,buffer_procesado,buffer_proc_len);
 	limpiar_buffers(buffer,buffer_len,\
@@ -48,7 +48,7 @@ void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
 }
 
 
-void enviar_ultimo_bloque(socket_t* socket,unsigned char* buffer_procesado,\
+static void enviar_ultimo_bloque(socket_t* socket,unsigned char* buffer_procesado,\
 		int* tamanio,int* bytes_enviados){
 	socket_send(socket,buffer_procesado,*tamanio);
 	free(buffer_procesado);
@@ -56,7 +56,7 @@ void enviar_ultimo_bloque(socket_t* socket,unsigned char* buffer_procesado,\
 }
 
 
-int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
+static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 	unsigned char buffer[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(archivo);
@@ -79,7 +79,7 @@ int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 }
 
 
-int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
+static int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
     unsigned char buff[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(archivo);
@@ -104,7 +104,7 @@ int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
 }
 
 
-int enviar_datos_rc4(archivo_t* archivo,\
+static int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
     unsigned char buffer[BUFFER_SIZE],S_cliente[256];
 	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(archivo);

@@ -2,7 +2,7 @@
 
 //Hace un swap entre el caracter de la posicion i con
 // el caracter de la posicion j, del vector S
-void swap(unsigned char *s, unsigned int i, unsigned int j) {
+static void swap(unsigned char *s, unsigned int i, unsigned int j) {
     unsigned char temp = s[i];
     s[i] = s[j];
     s[j] = temp;
