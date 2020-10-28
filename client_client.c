@@ -38,14 +38,6 @@ int cerrar_archivo(archivo_t* archivo){
 }
 
 
-int longitud_archivo(archivo_t* archivo){
-    fseek(archivo->fp, 0, SEEK_END);
-    int longitud_mensaje = ftell(archivo->fp);
-    rewind(archivo->fp);
-    return longitud_mensaje;
-}
-
-
 static void enviar_bloque(socket_t* socket,\
 		unsigned char* buffer,size_t buffer_len,unsigned char* buffer_procesado,\
 		size_t buffer_proc_len){
@@ -53,10 +45,6 @@ static void enviar_bloque(socket_t* socket,\
 	memset(buffer,0,buffer_len);
 	memset(buffer_procesado,0,buffer_proc_len);
 }
-
-
-
-
 
 
 static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
