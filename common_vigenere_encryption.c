@@ -1,5 +1,4 @@
 #include "common_vigenere_encryption.h"
-#include <stdio.h>
 
 
 void inicializar_vigenere(vigenere_t* self,int longitud_clave){

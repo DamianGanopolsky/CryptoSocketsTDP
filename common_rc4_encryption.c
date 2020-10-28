@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stddef.h>
 #include "common_rc4_encryption.h"
 
 
@@ -22,15 +22,37 @@ void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
         swap(S, i, j);
     }
 }
+/*
+void inicializar_rc4(char *key,unsigned int key_length,\
+		unsigned char* S,rc4_t* self){
+	int i,j;
+	//self->longitud_mensaje=longitud_mensaje;
+    for (i = 0; i < 256; i++){
+    	self->S[i] = i;
+    }
+    for (i = j = 0; i < 256; i++) {
+        j = (j + key[i % key_length] + self->S[i]) & 255;
+        swap(self->S, i, j);
+    }
+    self->i=0;
+    self->j=0;
+}
+*/
 
-void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char* \
-		buffer_procesado,rc4_t* self,int* i,int* j,int tamanio) {
+void rc4_cifrar(unsigned char* S,unsigned char* buffer,unsigned char*\
+		buffer_procesado,rc4_t* self,int* i,int* j,int tamanio){
 	size_t k=0;
 	while (k<tamanio){
 		int indice;
 		if ((buffer[k]=='\0')||(buffer[k]=='\n')){
 			break;
 		}
+		/*
+		self->i=(self->j+1) & 255;
+		self->j = (self->j+self->S[self->i]) & 255;
+		swap(self->S,self->i,self->j);
+		indice=(self->S[self->i]+self->S[self->j]) & 255;
+		buffer_procesado[k]=buffer[k]^self->S[indice]; */
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
         swap(S, *i, *j);
@@ -45,6 +67,13 @@ void rc4_descifrar(unsigned char* S,unsigned char* buffer_procesado,\
 	int k=0;
 	while (k<tamanio){
 		int indice;
+		/*
+		self->i=(self->j+1) & 255;
+		self->j = (self->j+self->S[self->i]) & 255;
+		swap(self->S,self->i,self->j);
+		indice=(self->S[self->i]+self->S[self->j]) & 255;
+		buffer_normalizado[k]=buffer_procesado[k]^self->S[indice]; */
+
         *i = (*i + 1) & 255;
         *j = (*j + S[*i]) & 255;
         swap(S, *i, *j);

@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include "common_socket.h"
 #include "server_server.h"
@@ -13,6 +12,7 @@ int main(int argc, char const *argv[]){
     //Me quedo solo con la clave sacando el --key del argumento
     int tamanio_clave= strlen(argv[3])-6;
     memcpy(clave,&argv[3][6],tamanio_clave);
+    clave[tamanio_clave] = '\0';
 	socket_init(&socket);
 	socket_init(&socket_peer);
 	socket_bind_and_listen(&socket,NULL,argv[1]);

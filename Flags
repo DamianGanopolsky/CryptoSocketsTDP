@@ -46,7 +46,7 @@ valgrind ./client 127.0.0.1 8080 --method=vigenere --key=Secret < __client_stdin
 
 RC4 LATIN:
 
-valgrind ./server 8080 --method=rc4 --key=Secret
+valgrind --track-origins=yes ./server 8080 --method=rc4 --key=Secret
 valgrind --track-origins=yes ./client 127.0.0.1 8080 --method=rc4 --key=Secret < __client_stdin__
 
 VIGENERE ATTACK:

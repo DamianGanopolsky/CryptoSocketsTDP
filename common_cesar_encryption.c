@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "common_cesar_encryption.h"
 
 

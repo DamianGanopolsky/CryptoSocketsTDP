@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200112L
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"
@@ -5,6 +6,18 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
+
+#include <stdint.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <errno.h>
 #define BUFFER_ESPERADO 64
 
 

@@ -1,7 +1,8 @@
 #include "common_socket.h"
 #include "stdio.h"
 
-
+//El cliente va a tener un tipo archivo_t el cual va a contener
+//un file pointer para manejar el archivo
 typedef struct{
     FILE* fp;
 } archivo_t;

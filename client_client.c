@@ -45,8 +45,9 @@ int longitud_archivo(archivo_t* archivo){
 }
 
 
-static void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
-		unsigned char* buffer_procesado,size_t buffer_proc_len,int* bytes_enviados){
+static void enviar_bloque(socket_t* socket,\
+		unsigned char* buffer,size_t buffer_len,unsigned char* buffer_procesado,\
+		size_t buffer_proc_len,int* bytes_enviados){
 	socket_send(socket,buffer_procesado,buffer_proc_len);
 	memset(buffer,0,buffer_len);
 	memset(buffer_procesado,0,buffer_proc_len);
@@ -54,8 +55,8 @@ static void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_l
 }
 
 
-static void enviar_ultimo_bloque(socket_t* socket,unsigned char* buffer_procesado,\
-		int* tamanio,int* bytes_enviados){
+static void enviar_ultimo_bloque(socket_t* socket,\
+		unsigned char* buffer_procesado,int* tamanio,int* bytes_enviados){
 	socket_send(socket,buffer_procesado,*tamanio);
 	free(buffer_procesado);
 	*bytes_enviados=*bytes_enviados+*tamanio;
@@ -85,7 +86,8 @@ static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
 }
 
 
-static int enviar_datos_vigenere(archivo_t* archivo,char* clave,socket_t* socket){
+static int enviar_datos_vigenere(archivo_t* archivo,\
+		char* clave,socket_t* socket){
     unsigned char buff[BUFFER_SIZE];
 	int bytes_enviados=0,tamanio;
 	int longitud_mensaje=longitud_archivo(archivo);
@@ -116,7 +118,7 @@ static int enviar_datos_rc4(archivo_t* archivo,\
 	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(archivo);
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
-			S_cliente,&rc4_cliente,longitud_mensaje);
+			S_cliente,&rc4_cliente,0);
 	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
 	while (!feof(archivo->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t

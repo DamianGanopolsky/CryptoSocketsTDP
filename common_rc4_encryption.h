@@ -1,10 +1,15 @@
 #ifndef COMMON_RC4_ENCRYPTION_H_
 #define COMMON_RC4_ENCRYPTION_H_
 
+//El tipo de dato rc4 va a contener la longitud total del mensaje
 
 typedef struct {
 	int longitud_mensaje;
 } rc4_t;
+/*int i;
+int j;
+unsigned char S[256];*/
+
 
 //Inicializa el vector de caracteres de estado S e
 //inicializa los valores de los atributos del TDA.
