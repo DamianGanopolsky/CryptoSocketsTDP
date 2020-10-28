@@ -1,17 +1,8 @@
 #ifndef COMMON_SOCKET_H_
 #define COMMON_SOCKET_H_
-#define _POSIX_C_SOURCE 200112L
-#include <stdint.h>
-#include <unistd.h>
+
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <errno.h>
+
 
 typedef struct {
 	int fd;

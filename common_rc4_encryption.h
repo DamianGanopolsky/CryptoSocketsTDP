@@ -1,8 +1,7 @@
 #ifndef COMMON_RC4_ENCRYPTION_H_
 #define COMMON_RC4_ENCRYPTION_H_
 
-#include <stdio.h>
-#include <string.h>
+
 
 
 typedef struct {

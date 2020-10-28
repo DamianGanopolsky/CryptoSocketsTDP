@@ -1,7 +1,7 @@
 #ifndef COMMON_CESAR_ENCRYPTION_H_
 #define COMMON_CESAR_ENCRYPTION_H_
 
-#include <stdio.h>
+
 
 //Cifra la cadena enviada como argumento, y genera una
 //cadena_procesada con la cadena anterior codificada

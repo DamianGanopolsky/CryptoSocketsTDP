@@ -1,8 +1,7 @@
 #ifndef COMMON_VIGENERE_ENCRYPTION_H_
 #define COMMON_VIGENERE_ENCRYPTION_H_
 
-#include <stdio.h>
-#include <string.h>
+
 
 typedef struct {
 	int posicion_cifrado;

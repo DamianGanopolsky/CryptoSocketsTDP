@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "common_cesar_encryption.h"
 
 void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,\
