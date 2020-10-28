@@ -4,7 +4,7 @@
 //El tipo de dato rc4 va a contener la longitud total del mensaje
 
 typedef struct {
-	int longitud_mensaje;
+	int longitud_mensaje; //Borrarlo
 } rc4_t;
 /*int i;
 int j;
@@ -14,7 +14,7 @@ unsigned char S[256];*/
 //Inicializa el vector de caracteres de estado S e
 //inicializa los valores de los atributos del TDA.
 void inicializar_rc4(char *key,unsigned int key_length,\
-		unsigned char* S,rc4_t* self,int longitud_mensaje);
+		unsigned char* S,rc4_t* self);
 
 
 //Cifra el buffer enviado como argumento, y genera un

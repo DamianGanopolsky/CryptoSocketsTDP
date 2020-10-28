@@ -6,6 +6,7 @@
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
 #define BUFFER_SIZE 64
+#define CANT_CARACTERES_ASCII 256
 #define ERROR -1
 #define EXITO 0
 
@@ -114,11 +115,11 @@ static int enviar_datos_vigenere(archivo_t* archivo,\
 
 static int enviar_datos_rc4(archivo_t* archivo,\
 		char* clave,socket_t* socket){
-    unsigned char buffer[BUFFER_SIZE],S_cliente[256];
+    unsigned char buffer[BUFFER_SIZE],S_cliente[CANT_CARACTERES_ASCII];
 	int bytes_enviados=0,tamanio,longitud_mensaje=longitud_archivo(archivo);
     rc4_t rc4_cliente;
 	inicializar_rc4(clave, strlen((char*)clave),\
-			S_cliente,&rc4_cliente,0);
+			S_cliente,&rc4_cliente);
 	int i_cliente=0,j_cliente=0;  //Inicializo los estados de rc4
 	while (!feof(archivo->fp)) {
 		fread(buffer, 1, BUFFER_SIZE, archivo->fp);  //Devuelve un size_t

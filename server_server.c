@@ -6,18 +6,7 @@
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
 #include "common_rc4_encryption.h"
-
-#include <stdint.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <errno.h>
+#define CANT_CARACTERES_ASCII 256
 #define BUFFER_ESPERADO 64
 
 
@@ -80,8 +69,8 @@ static void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
 	rc4_t rc4;
-	unsigned char S[256];
-	inicializar_rc4(clave,strlen((char*)clave),S,&rc4,0);
+	unsigned char S[CANT_CARACTERES_ASCII];
+	inicializar_rc4(clave,strlen((char*)clave),S,&rc4);
 	int i=0,j=0; //Inicializo los estados de rc4
 	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));

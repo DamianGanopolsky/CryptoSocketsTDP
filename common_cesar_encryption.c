@@ -1,4 +1,5 @@
 #include "common_cesar_encryption.h"
+#define CANT_CARACTERES_ASCII 256
 
 
 void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,\
@@ -9,7 +10,7 @@ void cifrado_cesar(unsigned char* cadena,unsigned char* cadena_procesada,\
 		char caracter;
 		caracter=*(cadena+i);
 		caracter=caracter+clave_numerica;
-		caracter=caracter%256;
+		caracter=caracter%CANT_CARACTERES_ASCII;
 		cadena_procesada[i]=caracter;
 		i++;
 	}
@@ -23,7 +24,7 @@ void descifrado_cesar(unsigned char* cadena_procesada,\
 		char valor_decimal;
 		valor_decimal=*(cadena_procesada+i);
 		valor_decimal=valor_decimal-clave_numerica;
-		valor_decimal=valor_decimal%256;
+		valor_decimal=valor_decimal%CANT_CARACTERES_ASCII;
 		cadena_normalizada[i]=valor_decimal;
 		i++;
 	}
