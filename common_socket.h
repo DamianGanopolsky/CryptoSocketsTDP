@@ -2,7 +2,8 @@
 #define COMMON_SOCKET_H_
 #include <sys/types.h>
 
-
+//El struct va a contener el file descriptor del socket
+//dado
 typedef struct {
 	int fd;
 } socket_t;

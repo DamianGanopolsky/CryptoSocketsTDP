@@ -1,7 +1,6 @@
 #ifndef COMMON_RC4_ENCRYPTION_H_
 #define COMMON_RC4_ENCRYPTION_H_
 
-//El tipo de dato rc4 va a contener la longitud total del mensaje
 
 typedef struct {
 	int longitud_mensaje; //Borrarlo
