@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "client_client.h"
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"

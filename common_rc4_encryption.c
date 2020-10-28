@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <string.h>
+//#include <string.h>
 #include "common_rc4_encryption.h"
 
 //Hace un swap entre el caracter de la posicion i con

@@ -1,3 +1,6 @@
+#include "string.h"
+#include "stdlib.h"
+#include "stdio.h"
 #include "server_server.h"
 #include "common_cesar_encryption.h"
 #include "common_vigenere_encryption.h"
