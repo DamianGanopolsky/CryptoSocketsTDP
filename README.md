@@ -1,9 +1,8 @@
 # Trabajo Practico 1
 
-Nombre: Damian Ganopolsky  
-Padrón: 101.168  
-
-Link al repositorio de github: https://github.com/DamianGanopolsky/TrabajoPractico1TDP
+*Nombre*: Damian Ganopolsky  
+*Padrón*: 101.168  
+*Repositorio*: https://github.com/DamianGanopolsky/TrabajoPractico1TDP
 
 ## Introducción
 
