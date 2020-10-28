@@ -17,7 +17,7 @@ int slice(const char* argumento,char* clave){
     return EXITO;
 }
 
-
+/*
 void limpiar_buffers(unsigned char* buffer1,size_t size1,\
 		unsigned char* buffer2,size_t size2){
 	if(buffer1!=NULL){
@@ -27,3 +27,4 @@ void limpiar_buffers(unsigned char* buffer1,size_t size1,\
 		memset(buffer2,0,size2);
 	}
 }
+*/

@@ -42,8 +42,8 @@ int longitud_archivo(archivo_t* archivo){
 static void enviar_bloque(socket_t* socket,unsigned char* buffer,size_t buffer_len,\
 		unsigned char* buffer_procesado,size_t buffer_proc_len,int* bytes_enviados){
 	socket_send(socket,buffer_procesado,buffer_proc_len);
-	limpiar_buffers(buffer,buffer_len,\
-			buffer_procesado,buffer_proc_len);
+	memset(buffer,0,buffer_len);
+	memset(buffer_procesado,0,buffer_proc_len);
 	*bytes_enviados=*bytes_enviados+BUFFER_SIZE;
 }
 
