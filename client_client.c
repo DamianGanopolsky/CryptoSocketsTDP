@@ -9,6 +9,9 @@
 #define CANT_CARACTERES_ASCII 256
 #define ERROR -1
 #define EXITO 0
+#define METODO_CESAR 1
+#define METODO_VIGENERE 2
+#define METODO_RC4 3
 
 
 int abrir_y_validar_archivo(int argc,char const *argv[],\
@@ -29,14 +32,12 @@ int abrir_y_validar_archivo(int argc,char const *argv[],\
     return EXITO;
 }
 
-
 int cerrar_archivo(archivo_t* archivo){
     if (archivo->fp != stdin){
         fclose(archivo->fp);
     }
     return 0;
 }
-
 
 static void enviar_bloque(socket_t* socket,\
 		unsigned char* buffer,size_t buffer_len,unsigned char* buffer_procesado,\
@@ -46,73 +47,51 @@ static void enviar_bloque(socket_t* socket,\
 	memset(buffer_procesado,0,buffer_proc_len);
 }
 
-
-static int enviar_datos_cesar(archivo_t* archivo,int clave,socket_t* socket){
-	unsigned char buffer[BUFFER_SIZE];
-	while (!feof(archivo->fp)) {
-		int bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);
-		if (bytes_leidos==0){
-			break;
-		}
-		unsigned char buffer_procesado[BUFFER_SIZE];
-		cifrado_cesar(buffer,buffer_procesado,clave,BUFFER_SIZE);
-		enviar_bloque(socket,buffer,sizeof(buffer),\
-				buffer_procesado,bytes_leidos);
+static void encriptar(unsigned char* buffer,unsigned char* buffer_procesado,\
+		char* clave,void* tipo,int bytes_leidos,int cifrador_a_usar){
+	if(cifrador_a_usar==METODO_CESAR){
+		int clave_numerica=atoi(clave);
+		cifrado_cesar(buffer,buffer_procesado,clave_numerica,bytes_leidos);
 	}
-    return 0;
+	if(cifrador_a_usar==METODO_VIGENERE){
+		cifrado_vigenere(buffer,buffer_procesado,clave,tipo,bytes_leidos);
+	}
+	if(cifrador_a_usar==METODO_RC4){
+		rc4_cifrar(buffer,buffer_procesado,\
+								tipo,bytes_leidos);
+	}
 }
 
-
-static int enviar_datos_vigenere(archivo_t* archivo,\
-		char* clave,socket_t* socket){
+static int enviar_mensaje(archivo_t* archivo,socket_t* socket,char* clave,void* tda,int cifrador_a_usar){
     unsigned char buff[BUFFER_SIZE];
-	vigenere_t vigenere_cliente;
-    inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
 	while (!feof(archivo->fp)) {
 		int bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);
 		if (bytes_leidos==0){
 			break;
 		}
 		unsigned char buff_procesado[BUFFER_SIZE];
-		cifrado_vigenere(buff,buff_procesado,clave,&vigenere_cliente,BUFFER_SIZE);
+		encriptar(buff,buff_procesado,clave,tda,bytes_leidos,cifrador_a_usar);
 		enviar_bloque(socket,buff,sizeof(buff),buff_procesado\
 				,bytes_leidos);
 	}
     return 0;
 }
 
-
-static int enviar_datos_rc4(archivo_t* archivo,\
-		char* clave,socket_t* socket){
-    unsigned char buffer[BUFFER_SIZE];
-    rc4_t rc4_cliente;
-	inicializar_rc4(clave, strlen((char*)clave),\
-			&rc4_cliente);
-	while (!feof(archivo->fp)) {
-		int bytes_leidos=fread(buffer, 1, BUFFER_SIZE, archivo->fp);
-		if (bytes_leidos==0){
-			break;
-		}
-		unsigned char buffer_procesado[BUFFER_SIZE];
-		rc4_cifrar(buffer,buffer_procesado,\
-						&rc4_cliente,bytes_leidos);
-		enviar_bloque(socket,buffer,sizeof(buffer),buffer_procesado\
-				,bytes_leidos);
-	}
-    return 0;
-}
-
-
 void enviar_datos(const char* metodo,char* clave\
 		, archivo_t* archivo,socket_t* socket){
     if (strcmp(metodo,"--method=cesar")==0){
-    	int clave_numerica=atoi(clave);
-    	enviar_datos_cesar(archivo,clave_numerica,socket);
+    	enviar_mensaje(archivo,socket,clave,NULL,METODO_CESAR);
     }
     if (strcmp(metodo,"--method=vigenere")==0){
-    	enviar_datos_vigenere(archivo,clave,socket);
+    	vigenere_t vigenere_cliente;
+        inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
+    	enviar_mensaje(archivo,socket,clave,&vigenere_cliente,METODO_VIGENERE);
     }
     if (strcmp(metodo,"--method=rc4")==0){
-    	enviar_datos_rc4(archivo,clave,socket);
+        rc4_t rc4_cliente;
+    	inicializar_rc4(clave, strlen((char*)clave),\
+    			&rc4_cliente);
+    	enviar_mensaje(archivo,socket,clave,&rc4_cliente,METODO_RC4);
+
     }
 }
