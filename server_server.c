@@ -8,44 +8,33 @@
 #include "common_rc4_encryption.h"
 #define CANT_CARACTERES_ASCII 256
 #define BUFFER_ESPERADO 64
+#define METODO_CESAR 1
+#define METODO_VIGENERE 2
+#define METODO_RC4 3
 
-
-static void recibir_mensaje_cesar(socket_t* socket_peer,int clave){
-	unsigned char mensaje[BUFFER_ESPERADO];
-	ssize_t recibidos=BUFFER_ESPERADO;
-	while (recibidos==BUFFER_ESPERADO){
-		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
-		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		descifrado_cesar(mensaje,mensaje_desencriptado,clave,BUFFER_ESPERADO);
-		fwrite(mensaje_desencriptado, 1, recibidos, stdout);
+static void desencriptar(unsigned char* mensaje,unsigned char* \
+		mensaje_desencriptado,char* clave,int tamanio,int metodo,void* tda_t){
+	if(metodo==METODO_CESAR){
+		int clave_numerica=atoi(clave);
+		descifrado_cesar(mensaje,mensaje_desencriptado,clave_numerica,tamanio);
 	}
-}
-
-
-static void recibir_mensaje_vigenere(socket_t* socket_peer,char* clave){
-	unsigned char mensaje[BUFFER_ESPERADO];
-	ssize_t recibidos=BUFFER_ESPERADO;
-	vigenere_t vigenere;
-	inicializar_vigenere(&vigenere,strlen((char*)clave));
-	while (recibidos==BUFFER_ESPERADO){
-		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
-		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
+	if(metodo==METODO_VIGENERE){
 		descifrado_vigenere(mensaje,mensaje_desencriptado,\
-				clave,&vigenere,BUFFER_ESPERADO);
-		fwrite(mensaje_desencriptado, 1, recibidos, stdout);
+						clave,tda_t,tamanio);
+	}
+	if(metodo==METODO_RC4){
+		rc4_descifrar(mensaje,mensaje_desencriptado,tda_t,tamanio);
 	}
 }
 
 
-static void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
+static void recibir_mensaje(socket_t* socket_peer,char* clave,void* tda_t,int metodo){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
-	rc4_t rc4;
-	inicializar_rc4(clave,strlen((char*)clave),&rc4);
 	while (recibidos==BUFFER_ESPERADO){
 		recibidos=socket_receive(socket_peer,mensaje, sizeof(mensaje));
 		unsigned char mensaje_desencriptado[BUFFER_ESPERADO];
-		rc4_descifrar(mensaje,mensaje_desencriptado,&rc4,recibidos);
+		desencriptar(mensaje,mensaje_desencriptado,clave,recibidos,metodo,tda_t);
 		fwrite(mensaje_desencriptado, 1, recibidos, stdout);
 	}
 }
@@ -53,13 +42,16 @@ static void recibir_mensaje_rc4(socket_t* socket_peer,char* clave){
 
 void recibir_datos(const char* metodo,char* clave,socket_t* socket_peer){
     if (strcmp(metodo,"--method=cesar")==0){
-    	int clave_numerica=atoi(clave);
-    	recibir_mensaje_cesar(socket_peer,clave_numerica);
+    	recibir_mensaje(socket_peer,clave,NULL,METODO_CESAR);
     }
     if (strcmp(metodo,"--method=vigenere")==0){
-    	recibir_mensaje_vigenere(socket_peer,clave);
+    	vigenere_t vigenere;
+    	inicializar_vigenere(&vigenere,strlen((char*)clave));
+    	recibir_mensaje(socket_peer,clave,&vigenere,METODO_VIGENERE);
     }
     if (strcmp(metodo,"--method=rc4")==0){
-    	recibir_mensaje_rc4(socket_peer,clave);
+    	rc4_t rc4;
+    	inicializar_rc4(clave,strlen((char*)clave),&rc4);
+    	recibir_mensaje(socket_peer,clave,&rc4,METODO_RC4);
     }
 }
