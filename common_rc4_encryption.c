@@ -9,29 +9,16 @@ static void swap(unsigned char *s, unsigned int i, unsigned int j) {
     s[i] = s[j];
     s[j] = temp;
 }
-/*
-void inicializar_rc4(char *key,unsigned int key_length,unsigned char* S\
-		,rc4_t* self) {
-	int i,j;
-    for (i = 0; i < CANT_CARACTERES_ASCII; i++){
-    	S[i] = i;
-    }
-    for (i = j = 0; i < CANT_CARACTERES_ASCII; i++) {
-        j = (j + key[i % key_length] + S[i]) % CANT_CARACTERES_ASCII;
-        swap(S, i, j);
-    }
-}
-*/
+
 
 void inicializar_rc4(char *key,unsigned int key_length,\
 		rc4_t* self){
 	int i,j;
-	//self->longitud_mensaje=longitud_mensaje;
-    for (i = 0; i < 256; i++){
+    for (i = 0; i < CANT_CARACTERES_ASCII; i++){
     	self->S[i] = i;
     }
-    for (i = j = 0; i < 256; i++) {
-        j = (j + key[i % key_length] + self->S[i]) & 255;
+    for (i = j = 0; i < CANT_CARACTERES_ASCII; i++) {
+        j = (j + key[i % key_length] + self->S[i]) % CANT_CARACTERES_ASCII;
         swap(self->S, i, j);
     }
     self->i=0;
@@ -44,23 +31,11 @@ void rc4_cifrar(unsigned char* buffer,unsigned char*\
 	size_t k=0;
 	while (k<tamanio){
 		int indice;
-		//if ((buffer[k]=='\0')||(buffer[k]=='\n')){
-			//break;
-		//}
-		//if ((buffer[k]=='\0')){
-			//break;
-		//}
-
-		self->i=(self->j+1) % 256;
-		self->j = (self->j+self->S[self->i]) % 256;
+		self->i=(self->j+1) % CANT_CARACTERES_ASCII;
+		self->j = (self->j+self->S[self->i]) % CANT_CARACTERES_ASCII;
 		swap(self->S,self->i,self->j);
-		indice=(self->S[self->i]+self->S[self->j]) % 256;
+		indice=(self->S[self->i]+self->S[self->j]) % CANT_CARACTERES_ASCII;
 		buffer_procesado[k]=buffer[k]^self->S[indice];
-      /*  *i = (*i + 1) % CANT_CARACTERES_ASCII;
-        *j = (*j + S[*i]) % CANT_CARACTERES_ASCII;
-        swap(S, *i, *j);
-        indice=(S[*i] + S[*j]) % CANT_CARACTERES_ASCII;
-        buffer_procesado[k]=buffer[k]^S[indice]; */
         k++;
     }
 }
@@ -70,18 +45,11 @@ void rc4_descifrar(unsigned char* buffer_procesado,\
 	int k=0;
 	while (k<tamanio){
 		int indice;
-
-		self->i=(self->j+1) & 255;
-		self->j = (self->j+self->S[self->i]) & 255;
+		self->i=(self->j+1) % CANT_CARACTERES_ASCII;
+		self->j = (self->j+self->S[self->i]) % CANT_CARACTERES_ASCII;
 		swap(self->S,self->i,self->j);
-		indice=(self->S[self->i]+self->S[self->j]) & 255;
+		indice=(self->S[self->i]+self->S[self->j]) % CANT_CARACTERES_ASCII;
 		buffer_normalizado[k]=buffer_procesado[k]^self->S[indice];
-
-       /* *i = (*i + 1) % CANT_CARACTERES_ASCII;
-        *j = (*j + S[*i]) % CANT_CARACTERES_ASCII;
-        swap(S, *i, *j);
-        indice=(S[*i] + S[*j]) % CANT_CARACTERES_ASCII;
-        buffer_normalizado[k]=buffer_procesado[k]^S[indice]; */
         k++;
     }
 }
