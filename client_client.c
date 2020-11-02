@@ -47,6 +47,8 @@ static void enviar_bloque(socket_t* socket,\
 	memset(buffer_procesado,0,buffer_proc_len);
 }
 
+//Encripta el mensaje dado usando el metodo pasado como parametro,
+//el mensaje desencriptado va a guardarse en el "buffer_procesado"
 static void encriptar(unsigned char* buffer,unsigned char* buffer_procesado,\
 		char* clave,void* tipo,int bytes_leidos,int cifrador_a_usar){
 	if(cifrador_a_usar==METODO_CESAR){
@@ -62,7 +64,9 @@ static void encriptar(unsigned char* buffer,unsigned char* buffer_procesado,\
 	}
 }
 
-static int enviar_mensaje(archivo_t* archivo,socket_t* socket,char* clave,void* tda,int cifrador_a_usar){
+//Funcion generica para el envio del mensaje en cualquier metodo
+static int enviar_mensaje(archivo_t* archivo,socket_t* socket,\
+		char* clave,void* tda,int cifrador_a_usar){
     unsigned char buff[BUFFER_SIZE];
 	while (!feof(archivo->fp)) {
 		int bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);

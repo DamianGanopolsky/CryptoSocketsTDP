@@ -28,7 +28,8 @@ static void desencriptar(unsigned char* mensaje,unsigned char* \
 }
 
 
-static void recibir_mensaje(socket_t* socket_peer,char* clave,void* tda_t,int metodo){
+static void recibir_mensaje(socket_t* socket_peer,\
+		char* clave,void* tda_t,int metodo){
 	unsigned char mensaje[BUFFER_ESPERADO];
 	ssize_t recibidos=BUFFER_ESPERADO;
 	while (recibidos==BUFFER_ESPERADO){
