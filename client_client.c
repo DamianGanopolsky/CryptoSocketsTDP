@@ -50,7 +50,8 @@ static void enviar_bloque(socket_t* socket,\
 //Encripta el mensaje dado usando el metodo pasado como parametro,
 //el mensaje desencriptado va a guardarse en el "buffer_procesado"
 static void encriptar(unsigned char* buffer,unsigned char* buffer_procesado,\
-		char* clave,void* tipo,int bytes_leidos,int cifrador_a_usar){
+		char* clave,void* tipo,int bytes_leidos,int cifrador_a_usar,unsigned char* S,
+		int* i,int* j){
 	if(cifrador_a_usar==METODO_CESAR){
 		int clave_numerica=atoi(clave);
 		cifrado_cesar(buffer,buffer_procesado,clave_numerica,bytes_leidos);
@@ -59,14 +60,14 @@ static void encriptar(unsigned char* buffer,unsigned char* buffer_procesado,\
 		cifrado_vigenere(buffer,buffer_procesado,clave,tipo,bytes_leidos);
 	}
 	if(cifrador_a_usar==METODO_RC4){
-		rc4_cifrar(buffer,buffer_procesado,\
-								tipo,bytes_leidos);
+		rc4_cifrar(S,buffer,buffer_procesado,\
+								i,j,bytes_leidos);
 	}
 }
 
 //Funcion generica para el envio del mensaje en cualquier metodo
 static int enviar_mensaje(archivo_t* archivo,socket_t* socket,\
-		char* clave,void* tda,int cifrador_a_usar){
+		char* clave,void* tda,int cifrador_a_usar,unsigned char* S,int* i,int* j){
     unsigned char buff[BUFFER_SIZE];
 	while (!feof(archivo->fp)) {
 		int bytes_leidos=fread(buff, 1, BUFFER_SIZE, archivo->fp);
@@ -74,7 +75,7 @@ static int enviar_mensaje(archivo_t* archivo,socket_t* socket,\
 			break;
 		}
 		unsigned char buff_procesado[BUFFER_SIZE];
-		encriptar(buff,buff_procesado,clave,tda,bytes_leidos,cifrador_a_usar);
+		encriptar(buff,buff_procesado,clave,tda,bytes_leidos,cifrador_a_usar,S,i,j);
 		enviar_bloque(socket,buff,sizeof(buff),buff_procesado\
 				,bytes_leidos);
 	}
@@ -84,17 +85,20 @@ static int enviar_mensaje(archivo_t* archivo,socket_t* socket,\
 void enviar_datos(const char* metodo,char* clave\
 		, archivo_t* archivo,socket_t* socket){
     if (strcmp(metodo,"--method=cesar")==0){
-    	enviar_mensaje(archivo,socket,clave,NULL,METODO_CESAR);
+    	enviar_mensaje(archivo,socket,clave,NULL,METODO_CESAR,NULL,NULL,NULL);
     }
     if (strcmp(metodo,"--method=vigenere")==0){
     	vigenere_t vigenere_cliente;
         inicializar_vigenere(&vigenere_cliente,strlen((char*)clave));
-    	enviar_mensaje(archivo,socket,clave,&vigenere_cliente,METODO_VIGENERE);
+    	enviar_mensaje(archivo,socket,clave,&vigenere_cliente,\
+    			METODO_VIGENERE,NULL,NULL,NULL);
     }
     if (strcmp(metodo,"--method=rc4")==0){
-        rc4_t rc4_cliente;
+    	unsigned char S_cliente[CANT_CARACTERES_ASCII];
+    	int i_cliente=0,j_cliente=0;
     	inicializar_rc4(clave, strlen((char*)clave),\
-    			&rc4_cliente);
-    	enviar_mensaje(archivo,socket,clave,&rc4_cliente,METODO_RC4);
+    			S_cliente);
+    	enviar_mensaje(archivo,socket,clave,NULL,METODO_RC4,\
+    			S_cliente,&i_cliente,&j_cliente);
     }
 }
