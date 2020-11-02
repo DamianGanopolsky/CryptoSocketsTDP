@@ -96,6 +96,5 @@ void enviar_datos(const char* metodo,char* clave\
     	inicializar_rc4(clave, strlen((char*)clave),\
     			&rc4_cliente);
     	enviar_mensaje(archivo,socket,clave,&rc4_cliente,METODO_RC4);
-
     }
 }
